@@ -48,7 +48,7 @@ export default async function SubcategoryPage({ params }: Props) {
   const { category: categorySlug,subcategory: subcategorySlug} = await params; 
   const category = getCategoryBySlug(categorySlug)
   const subcategory = getSubcategoryBySlug(categorySlug, subcategorySlug)
-  const articles = getArticlesBySubcategory(categorySlug, subcategorySlug)
+  const articles = await getArticlesBySubcategory(categorySlug, subcategorySlug)
 
   if (!category || !subcategory) {
     notFound()

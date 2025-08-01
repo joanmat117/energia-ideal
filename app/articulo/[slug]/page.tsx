@@ -19,7 +19,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const {slug:articleSlug} = await params
-  const article = getArticleBySlug(articleSlug)
+  const article = await getArticleBySlug(articleSlug)
 
   if (!article) {
     return {
@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ArticlePage({ params }: Props) {
   const {slug:articleSlug} = await params
-  const article = getArticleBySlug(articleSlug)
+  const article = await getArticleBySlug(articleSlug)
 
   if (!article) {
     notFound()
@@ -65,7 +65,7 @@ export default async function ArticlePage({ params }: Props) {
 
   const category = getCategoryBySubcategories(article.subcategory)
   const subcategory = article.subcategory[0]
-  const relatedArticles = getRelatedArticles(article)
+  const relatedArticles = await getRelatedArticles(article)
   const headings = extractHeadings(article.content)
   const htmlContent = await markdownToHtml(article.content)
   const processedContent = addIdsToHeadings(htmlContent)

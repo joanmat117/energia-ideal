@@ -1,41 +1,38 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Roboto } from "next/font/google"
 import "./globals.css"
 import Navbar from "@/components/navbar"
+import { nicheHeaderAndFooter, nicheMetadata } from "@/data/dataNiche"
 
-const inter = Inter({ subsets: ["latin"] })
+const roboto = Roboto({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "EnergyHub - Generadores, Energía Solar y Estaciones Portátiles",
-  description:
-    "Tu guía completa sobre generadores eléctricos, paneles solares, estaciones de energía portátil y todo sobre energía renovable.",
-  keywords:
-    "generadores eléctricos, paneles solares, energía solar, estaciones portátiles, EcoFlow, generadores inverter",
-  authors: [{ name: "EnergyHub Team" }],
-  creator: "EnergyHub",
-  publisher: "EnergyHub",
+  title: nicheMetadata.title,
+  description: nicheMetadata.description,
+  authors: [{ name: nicheMetadata.web_name + " Team" }],
+  creator: nicheMetadata.web_name,
+  publisher: nicheMetadata.web_name,
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://energyhub.com"),
+  metadataBase: new URL(nicheMetadata.base_url),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "EnergyHub - Generadores, Energía Solar y Estaciones Portátiles",
-    description:
-      "Tu guía completa sobre generadores eléctricos, paneles solares, estaciones de energía portátil y todo sobre energía renovable.",
-    url: "https://energyhub.com",
-    siteName: "EnergyHub",
+    title: nicheMetadata.title,
+    description:nicheMetadata.description,
+    url: nicheMetadata.base_url,
+    siteName: nicheMetadata.web_name,
     images: [
       {
-        url: "/placeholder.svg?height=630&width=1200&text=EnergyHub",
+        url: nicheMetadata.meta_image,
         width: 1200,
         height: 630,
-        alt: "EnergyHub - Tu guía de energía",
+        alt: nicheMetadata.title,
       },
     ],
     locale: "es_ES",
@@ -43,10 +40,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "EnergyHub - Generadores, Energía Solar y Estaciones Portátiles",
-    description:
-      "Tu guía completa sobre generadores eléctricos, paneles solares, estaciones de energía portátil y todo sobre energía renovable.",
-    images: ["/placeholder.svg?height=630&width=1200&text=EnergyHub"],
+    title: nicheMetadata.title,
+    description:nicheMetadata.description,
+    images: [nicheMetadata.base_url],
   },
   robots: {
     index: true,
@@ -58,8 +54,7 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
       "max-snippet": -1,
     },
-  },
-    generator: 'v0.dev'
+  }
 }
 
 export default function RootLayout({
@@ -69,13 +64,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={inter.className}>
+      <body className={roboto.className}>
         <div className="min-h-screen bg-gray-50">
           <Navbar />
           <main className="pb-12">{children}</main>
           <footer className="bg-gray-900 text-white py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
                   <h3 className="text-lg font-semibold mb-4">EnergyHub</h3>
                   <p className="text-gray-400">
@@ -122,19 +117,19 @@ export default function RootLayout({
                   <ul className="space-y-2 text-gray-400">
                     <li>
                       <a href="#" className="hover:text-white">
-                        Política de Privacidad
+                        Privacy Policy
                       </a>
                     </li>
                     <li>
                       <a href="#" className="hover:text-white">
-                        Términos de Uso
+                        Terms
                       </a>
                     </li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
               <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2024 EnergyHub. Todos los derechos reservados.</p>
+                <p>&copy; 2024 {nicheMetadata.web_name}. All rights reserved.</p>
               </div>
             </div>
           </footer>

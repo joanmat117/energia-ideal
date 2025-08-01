@@ -1,3 +1,17 @@
+export const tableDB = "articles"
+
+export const nicheMetadata = {
+    title:"EnergyHub - Generadores, Energía Solar y Estaciones Portátiles",
+    description:"Tu guía completa sobre generadores eléctricos, paneles solares, estaciones de energía portátil y todo sobre energía renovable.",
+    web_name:"EnergyHub",
+    base_url:"https://energiaideal.vercel.app",
+    meta_image:"/placeholder.svg?height=630&width=1200&text=EnergyHub"
+}
+
+export const nicheHeaderAndFooter = {
+
+}
+
 export const nicheHomeText = {
     title_hero:"Tu Guía Completa de Energía",
     description_hero:"Descubre todo sobre generadores eléctricos, paneles solares, estaciones portátiles y energía renovable",

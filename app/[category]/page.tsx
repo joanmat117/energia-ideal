@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${category.name} | EnergyHub`,
       description: category.description,
-      url: `/${category.slug}`,
+      url: `/${category.id}`,
       images: [
         {
           url: `/placeholder.svg?height=630&width=1200&text=${encodeURIComponent(category.name)}`,
@@ -48,13 +48,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CategoryPage({ params }: Props) {
   const { category: categorySlug } = await params
   const category = getCategoryBySlug(categorySlug)
-  const articles = getArticlesByCategory(categorySlug)
+  const articles = await getArticlesByCategory(categorySlug)
 
   if (!category) {
     notFound()
   }
 
-  const breadcrumbs = [{ label: category.name, href: `/${category.slug}` }]
+  const breadcrumbs = [{ label: category.name, href: `/${category.id}` }]
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -76,7 +76,7 @@ export default async function CategoryPage({ params }: Props) {
             <Card key={subcategory.id} className="group hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="group-hover:text-indigo-600 transition-colors">
-                  <Link href={`/${category.slug}/${subcategory.slug}`}>{subcategory.name}</Link>
+                  <Link href={`/${category.id}/${subcategory.id}`}>{subcategory.name}</Link>
                 </CardTitle>
                 <CardDescription>{subcategory.description}</CardDescription>
               </CardHeader>
