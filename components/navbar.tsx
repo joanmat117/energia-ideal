@@ -11,7 +11,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <nav className="bg-background-600 shadow-sm border-b sticky top-0 z-50">
+    <nav className="bg-background-100 shadow-sm border-b sticky top-0 z-50">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between flex-col md:flex-row gap-2 items-center md:items-stretch">
           <div className="flex items-center p-2">

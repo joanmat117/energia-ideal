@@ -99,29 +99,43 @@
     --sidebar-border: oklch(0.929 0.013 255.508);
     --sidebar-ring: oklch(0.704 0.04 256.788);
     /*Mis variables*/
-    --background-50: #ffffff;        /* Blanco puro */
-    --background-100: #fafbfd;       /* Blanco con un 0.5% de azul/gris */
-    --background-200: #f5f7fa;       /* Blanco ligeramente ahumado */
-    --background-300: #f0f3f8;       /* Blanco con un toque de gris frío */
-    --background-400: #ebeff5;       /* Blanco-grisáceo muy suave */
-    --background-500: #e6ebf3;       /* Blanco con un susurro de azul/gris */
-    --background-600: #e1e7f0;       /* Gris claro con matiz azul casi invisible */
-    --background-700: #dce3ed;       /* Gris muy claro y ligeramente frío */
-    --background-800: #d7dfea;       /* Gris claro con un 3% de azul */
-    --background-900: #d2dbe7;       /* Gris neutro con un respiro de azul */
-    --background-950: #cdd7e4;       /* Gris perla azulado (límite antes de ser gris medio) */
+    --background-50: #ffffff;     
+    --background-100: #fafbfd;      
+    --background-200: #f5f7fa;     
+    --background-300: #f0f3f8;      
+    --background-400: #ebeff5;     
+    --background-500: #e6ebf3;      
+    --background-600: #e1e7f0;      
+    --background-700: #dce3ed;     
+    --background-800: #d7dfea;    
+    --background-900: #d2dbe7;      
+    --background-950: #cdd7e4;      
 
-    --text-50: #000000;            /* Negro puro (máximo contraste) */
-    --text-100: #0a0a0a;           /* Negro intenso */
-    --text-200: #141414;           /* Negro con un 5% de luminosidad */
-    --text-300: #1e1e1e;           /* Negro mate */
-    --text-400: #282828;           /* Gris muy oscuro (para texto secundario) */
-    --text-500: #323232;           /* Gris oscuro */
-    --text-600: #3c3c3c;           /* Gris medio (para texto desactivado) */
-    --text-700: #464646;           /* Gris neutro */
-    --text-800: #505050;           /* Gris claro (solo para detalles) */
-    --text-900: #5a5a5a;           /* Gris muy claro (uso limitado) */
-    --text-950: #646464;           /* Límite de legibilidad en fondos claros */
+    --text-50: #000000;          
+    --text-100: #0a0a0a;          
+    --text-200: #141414;      
+    --text-300: #1e1e1e;       
+    --text-400: #282828;       
+    --text-500: #323232;         
+    --text-600: #3c3c3c;         
+    --text-700: #464646;       
+    --text-800: #505050;       
+    --text-900: #5a5a5a;          
+    --text-950: #646464; 
+    
+    --color-school-bus-yellow-50: #fefde8;
+    --color-school-bus-yellow-100: #fffcc2;
+    --color-school-bus-yellow-200: #fff687;
+    --color-school-bus-yellow-300: #ffe943;
+    --color-school-bus-yellow-400: #ffd815;
+    --color-school-bus-yellow-500: #efbe03;
+    --color-school-bus-yellow-600: #ce9300;
+    --color-school-bus-yellow-700: #a46804;
+    --color-school-bus-yellow-800: #88510b;
+    --color-school-bus-yellow-900: #734210;
+    --color-school-bus-yellow-950: #432205;
+
+
 }
 
 .dark {
