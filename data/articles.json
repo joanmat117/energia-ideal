@@ -1,0 +1,40 @@
+{
+  "articles": [
+    {
+      "id": 1,
+      "title": "Generadores de Gasolina: Guía Completa 2024",
+      "slug": "generadores-gasolina-guia-completa-2024",
+      "description": "Todo lo que necesitas saber sobre generadores de gasolina para elegir el mejor para tu hogar.",
+      "subcategory": ["gasolina"],
+      "content": "# Generadores de Gasolina: Guía Completa 2024\n\n## ¿Qué son los generadores de gasolina?\n\nLos generadores de gasolina son dispositivos que convierten la energía química de la gasolina en energía eléctrica mediante un motor de combustión interna.\n\n## Ventajas de los generadores de gasolina\n\n### Portabilidad\nLa mayoría de generadores de gasolina son portátiles y fáciles de transportar.\n\n### Disponibilidad del combustible\nLa gasolina está ampliamente disponible en estaciones de servicio.\n\n## Tipos de generadores de gasolina\n\n### Generadores convencionales\nSon los más comunes y económicos del mercado.\n\n### Generadores inverter\nOfrecen una energía más limpia y estable.\n\n## Cómo elegir el generador adecuado\n\nConsideraciones importantes para tu decisión de compra.",
+      "image": "/placeholder.svg?height=400&width=600&text=Generador+de+Gasolina"
+    },
+    {
+      "id": 2,
+      "title": "Paneles Solares para Casa: Inversión Inteligente",
+      "slug": "paneles-solares-casa-inversion-inteligente",
+      "subcategory": ["paneles-casa"],
+      "description": "Descubre cómo los paneles solares pueden transformar tu hogar en una fuente de energía renovable y ahorrar en tu factura eléctrica.",
+      "content": "# Paneles Solares para Casa: Inversión Inteligente\n\n## Beneficios de instalar paneles solares\n\n### Ahorro económico\nReduce significativamente tu factura de electricidad.\n\n### Energía limpia\nContribuye al cuidado del medio ambiente.\n\n## Tipos de paneles solares\n\n### Paneles monocristalinos\nMayor eficiencia energética.\n\n### Paneles policristalinos\nMejor relación calidad-precio.\n\n## Proceso de instalación\n\n### Evaluación del techo\nAnálisis de la estructura y orientación.\n\n### Dimensionamiento del sistema\nCálculo de la potencia necesaria.",
+      "image": "/placeholder.svg?height=400&width=600&text=Paneles+Solares+Casa"
+    },
+    {
+      "id": 3,
+      "title": "EcoFlow Delta Pro: Análisis Completo",
+      "slug": "ecoflow-delta-pro-analisis-completo",
+      "subcategory": ["ecoflow"],
+      "description": "Análisis detallado de la estación de energía portátil EcoFlow Delta Pro, sus características, ventajas y desventajas.",
+      "content": "# EcoFlow Delta Pro: Análisis Completo\n\n## Características técnicas\n\n### Capacidad de batería\n3600Wh expandible hasta 25kWh.\n\n### Potencia de salida\n3600W de potencia continua.\n\n## Rendimiento en pruebas\n\n### Tiempo de carga\nCarga completa en 2.7 horas.\n\n### Autonomía\nAlimenta electrodomésticos por días.\n\n## Ventajas principales\n\n### Versatilidad\nMúltiples opciones de carga y descarga.\n\n### Portabilidad\nDiseño robusto pero transportable.",
+      "image": "/placeholder.svg?height=400&width=600&text=EcoFlow+Delta+Pro"
+    },
+    {
+      "id": 4,
+      "title": "Generadores Inverter: Tecnología Avanzada",
+      "slug": "generadores-inverter-tecnologia-avanzada",
+      "subcategory": ["inverter"],
+      "description": "Conoce las ventajas de los generadores inverter y por qué son la mejor opción para equipos electrónicos sensibles.",
+      "content": "# Generadores Inverter: Tecnología Avanzada\n\n## ¿Qué es un generador inverter?\n\nUn generador inverter es un tipo de generador que produce electricidad de alta calidad mediante tecnología de inversión.\n\n## Ventajas de los generadores inverter\n\n### Energía limpia\nProducen electricidad con baja distorsión armónica.\n\n### Eficiencia de combustible\nConsumo optimizado según la demanda.\n\n## Aplicaciones ideales\n\n### Equipos electrónicos\nSeguro para computadoras y dispositivos sensibles.\n\n### Camping y recreación\nOperación silenciosa y portátil.",
+      "image": "/placeholder.svg?height=400&width=600&text=Generador+Inverter"
+    }
+  ]
+}
