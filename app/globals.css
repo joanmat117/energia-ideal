@@ -63,6 +63,18 @@
     --color-foreground-900: var(--text-900);
     --color-foreground-950: var(--text-950);
 
+    --color-accent-50: var(--accent-50);
+    --color-accent-100: var(--accent-100);
+    --color-accent-200: var(--accent-200);
+    --color-accent-300: var(--accent-300);
+    --color-accent-400: var(--accent-400);
+    --color-accent-500: var(--accent-500);
+    --color-accent-600: var(--accent-600);
+    --color-accent-700: var(--accent-700);
+    --color-accent-800: var(--accent-800);
+    --color-accent-900: var(--accent-900);
+    --color-accent-950: var(--accent-950);
+
 }
 
 :root {
@@ -123,17 +135,17 @@
     --text-900: #5a5a5a;          
     --text-950: #646464; 
     
-    --color-school-bus-yellow-50: #fefde8;
-    --color-school-bus-yellow-100: #fffcc2;
-    --color-school-bus-yellow-200: #fff687;
-    --color-school-bus-yellow-300: #ffe943;
-    --color-school-bus-yellow-400: #ffd815;
-    --color-school-bus-yellow-500: #efbe03;
-    --color-school-bus-yellow-600: #ce9300;
-    --color-school-bus-yellow-700: #a46804;
-    --color-school-bus-yellow-800: #88510b;
-    --color-school-bus-yellow-900: #734210;
-    --color-school-bus-yellow-950: #432205;
+    --accent-50: #fefde8;
+    --accent-100: #fffcc2;
+    --accent-200: #fff687;
+    --accent-300: #ffe943;
+    --accent-400: #ffd815;
+    --accent-500: #efbe03;
+    --accent-600: #ce9300;
+    --accent-700: #a46804;
+    --accent-800: #88510b;
+    --accent-900: #734210;
+    --accent-950: #432205;
 
 
 }
