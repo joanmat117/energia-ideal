@@ -43,20 +43,6 @@ export default function ArticleCard({ article, featured = false }: ArticleCardPr
 
         <CardDescription className="line-clamp-2">{article.excerpt}</CardDescription>
       </CardHeader>
-
-      <CardContent className="pt-0">
-        <div className="flex flex-wrap gap-2 mb-3">
-          {article.tags.slice(0, 3).map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs">
-              {tag}
-            </Badge>
-          ))}
-        </div>
-
-        <Link href={`/articulo/${article.slug}`} className="text-indigo-600 hover:text-indigo-800 font-medium text-sm">
-          Leer más →
-        </Link>
-      </CardContent>
     </Card>
   )
 }

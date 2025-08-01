@@ -5,9 +5,9 @@ import ArticleCard from "@/components/article-card"
 import { getFeaturedArticles, getLatestArticles, categories } from "@/lib/data"
 import { nicheHomeText } from "@/data/dataNiche"
 
-export default function HomePage() {
-  const featuredArticles = getFeaturedArticles()
-  const latestArticles = getLatestArticles()
+export default async function HomePage() {
+  const featuredArticles = await getFeaturedArticles()
+  const latestArticles = await getLatestArticles()
 
   return (
     <div className="min-h-screen">
@@ -15,7 +15,7 @@ export default function HomePage() {
       <section className="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            <h1 className="text-5xl font-bold mb-6">
               {nicheHomeText.title_hero}
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">

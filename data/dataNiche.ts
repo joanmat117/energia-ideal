@@ -106,7 +106,7 @@ export  const nicheCategories = {
     },
     {
       "id": "estaciones-portatiles",
-      "name": "Estaciones de Energía Portátil",
+      "name": "Estaciones Portátiles",
       "description": "Estaciones de energía portátil para alimentar tus dispositivos",
       "icon": "🔋",
       "subcategories": [
@@ -134,7 +134,7 @@ export  const nicheCategories = {
     },
     {
       "id": "guias-consejos",
-      "name": "Guías y Consejos",
+      "name": "Guías",
       "description": "Guías completas y consejos expertos sobre energía",
       "icon": "📚",
       "subcategories": [
