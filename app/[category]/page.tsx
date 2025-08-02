@@ -62,7 +62,6 @@ export default async function CategoryPage({ params }: Props) {
 
       <div className="mb-12">
         <h1 className="text-4xl font-bold mb-4 flex items-center">
-          <span className="text-4xl mr-4">{category.icon}</span>
           {category.name}
         </h1>
         <p className="text-xl text-gray-600 mb-8">{category.description}</p>
