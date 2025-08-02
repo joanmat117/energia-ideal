@@ -5,7 +5,9 @@ import "./globals.css"
 import Navbar from "@/components/navbar"
 import { nicheHeaderAndFooter, nicheMetadata } from "@/data/dataNiche"
 
-const roboto = Roboto({ subsets: ["latin"] })
+const roboto = Roboto(
+  { subsets: ["latin"],fallback:["sans-serif"] }
+)
 
 export const metadata: Metadata = {
   title: nicheMetadata.title,

@@ -1,43 +1,12 @@
 export const tableDB = "articles"
 
-export const nicheMetadata = {
-    title:"EnergyHub - Generadores, Energía Solar y Estaciones Portátiles",
-    description:"Tu guía completa sobre generadores eléctricos, paneles solares, estaciones de energía portátil y todo sobre energía renovable.",
-    web_name:"EnergyHub",
-    base_url:"https://energiaideal.vercel.app",
-    meta_image:"/placeholder.svg?height=630&width=1200&text=EnergyHub"
-}
-
-export const nicheHeaderAndFooter = {
-
-}
-
-export const nicheHomeText = {
-    title_hero:"Tu Guía Completa de Energía",
-    description_hero:"Descubre todo sobre generadores eléctricos, paneles solares, estaciones portátiles y energía renovable",
-    cta_1:"Explorar Guías",
-    cta_2:"Ver Análisis",
-    category_section:"Explora por Categoría",
-    watch_more:"Ver más...",
-    featured_articles_section:"Artículos Destacados",
-    last_articles_section:"Últimos Artículos",
-    btn_all_articles:"Ver Todos los Artículos",
-    cta_section:"¿Necesitas ayuda eligiendo?",
-    cta_section_description:"Nuestras guías te ayudarán a encontrar la solución energética perfecta para tus necesidades",
-    watch_guides:"Ver Guías de Compra"
-}
-
-export const nicheArticleText = {
-    recommended:"Artículos Relacionados",
-}
-
 export  const nicheCategories = {
     "categories": [
     {
       "id": "generadores-electricos",
       "name": "Generadores Eléctricos",
       "description": "Todo sobre generadores eléctricos para hogar, camping y emergencias",
-      "icon": "⚡",
+      "image":"https://images.pexels.com/photos/18816918/pexels-photo-18816918/free-photo-of-technicians-tinkering-with-a-power-generator.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       "subcategories": [
         {
           "id": "gasolina",
@@ -85,7 +54,7 @@ export  const nicheCategories = {
       "id": "energia-solar",
       "name": "Energía Solar",
       "description": "Paneles solares, kits e instalaciones para aprovechar la energía del sol",
-      "icon": "☀️",
+      "image": "https://i.ibb.co/zWY50hkn/web2.jpg",
       "subcategories": [
         {
           "id": "paneles-casa",
@@ -108,7 +77,7 @@ export  const nicheCategories = {
       "id": "estaciones-portatiles",
       "name": "Estaciones Portátiles",
       "description": "Estaciones de energía portátil para alimentar tus dispositivos",
-      "icon": "🔋",
+      "image": "https://i.ibb.co/YFFdvvSg/web.jpg",
       "subcategories": [
         {
           "id": "ecoflow",
@@ -136,7 +105,7 @@ export  const nicheCategories = {
       "id": "guias-consejos",
       "name": "Guías",
       "description": "Guías completas y consejos expertos sobre energía",
-      "icon": "📚",
+      "image": "https://i.ibb.co/bj5xq9vb/pexels-cristian-rojas-8853502.jpg",
       "subcategories": [
         {
           "id": "que-elegir",
@@ -159,7 +128,7 @@ export  const nicheCategories = {
       "id": "destacados",
       "name": "Destacados",
       "description": "Análisis, reviews y las últimas tendencias en energía",
-      "icon": "⭐",
+      "image": "https://i.ibb.co/wZDQDjJM/pexels-kindelmedia-9800028.jpg",
       "subcategories": [
         {
           "id": "analisis-generadores",
@@ -189,4 +158,35 @@ export  const nicheCategories = {
       ]
     }
   ]
+}
+
+export const nicheMetadata = {
+    title:"Energía Ideal - Generadores, Energía Solar y Estaciones Portátiles",
+    description:"Tu guía completa sobre generadores eléctricos, paneles solares, estaciones de energía portátil y todo sobre energía renovable.",
+    web_name:"Energía Ideal",
+    base_url:"https://energiaideal.vercel.app",
+    meta_image:"/placeholder.svg?height=630&width=1200&text=EnergyHub"
+}
+
+export const nicheHeaderAndFooter = {
+
+}
+
+export const nicheHomeText = {
+    title_hero:"Tu Guía Completa de Energía",
+    description_hero:"Descubre todo sobre generadores eléctricos, paneles solares, estaciones portátiles y energía renovable",
+    cta_text:"Explorar Guías",
+    cta_link:nicheCategories.categories[3].id,
+    category_section:"Explora por Categoría",
+    watch_more:"Ver más...",
+    featured_articles_section:"Artículos Destacados",
+    last_articles_section:"Últimos Artículos",
+    btn_all_articles:"Ver Todos los Artículos",
+    cta_section:"¿Necesitas ayuda eligiendo?",
+    cta_section_description:"Nuestras guías te ayudarán a encontrar la solución energética perfecta para tus necesidades",
+    watch_guides:"Ver Guías de Compra"
+}
+
+export const nicheArticleText = {
+    recommended:"Artículos Relacionados",
 }
