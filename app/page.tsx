@@ -40,7 +40,7 @@ export default async function HomePage() {
               <Card key={category.id} className="group rounded-sm border-none transition">
                 <Link href={`/${category.id}`}>
                 <CardHeader className="text-center p-0">
-                <img src={category.image} className="aspect-[21/9] object-cover" alt="Generador Electrico de gasolina"/>
+                <img src={category.image} className="aspect-[21/9] object-cover" alt={category.name}/>
                   <CardTitle className="group-hover:text-accent-600 text-start transition-colors">
                     {category.name}
                   </CardTitle>
