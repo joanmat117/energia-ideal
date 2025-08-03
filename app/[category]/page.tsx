@@ -5,7 +5,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import Breadcrumbs from "@/components/breadcrumbs"
 import ArticleCard from "@/components/article-card"
 import { getCategoryBySlug, getArticlesByCategory } from "@/lib/data"
-
+import { nicheCategoryPage, nicheMetadata, nicheSubcategoryPage } from "@/data/dataNiche"
 interface Props {
   params: Promise<{ category: string }>
 }
@@ -16,20 +16,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!category) {
     return {
-      title: "Categoría no encontrada",
+      title: nicheCategoryPage.not_subcategory,
     }
   }
 
   return {
-    title: `${category.name} | EnergyHub`,
+    title: `${category.name} | ${nicheMetadata.web_name}`,
     description: category.description,
     openGraph: {
-      title: `${category.name} | EnergyHub`,
+      title: `${category.name} | ${nicheMetadata.web_name}`,
       description: category.description,
       url: `/${category.id}`,
       images: [
         {
-          url: `/placeholder.svg?height=630&width=1200&text=${encodeURIComponent(category.name)}`,
+          url: category.image,
           width: 1200,
           height: 630,
           alt: category.name,
@@ -38,9 +38,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${category.name} | EnergyHub`,
+      title: `${category.name} | ${nicheMetadata.web_name}`,
       description: category.description,
-      images: [`/placeholder.svg?height=630&width=1200&text=${encodeURIComponent(category.name)}`],
+      images: [category.image],
     },
   }
 }
@@ -54,31 +54,37 @@ export default async function CategoryPage({ params }: Props) {
     notFound()
   }
 
-  const breadcrumbs = [{ label: category.name, href: `/${category.id}` }]
+  const breadcrumbs = [{ label: category.id, href: `/${category.id}` }]
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto">
+      <div className="px-4 sm:px-6 lg:px-8 py-8">
       <Breadcrumbs items={breadcrumbs} />
+      </div>
 
-      <div className="mb-12">
-        <h1 className="text-4xl font-bold mb-4 flex items-center">
+      {/*===========Ad==========*/}
+
+      <div className="mb-12 px-4 sm:px-6 lg:px-8">
+        <h1 className="text-4xl text-foreground-50 font-merriweather font-bold mb-4 flex items-center">
           {category.name}
         </h1>
-        <p className="text-xl text-gray-600 mb-8">{category.description}</p>
+        <p className="text-xl text-foreground-600 mb-8">{category.description}</p>
       </div>
 
       {/* Subcategories */}
-      <div className="mb-12">
-        <h2 className="text-2xl font-bold mb-6">Subcategorías</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="mb-12 px-4 sm:px-6 lg:px-8 py-2">
+        <h2 className="text-2xl font-bold mb-6">{nicheCategoryPage.subcategory}</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
           {category.subcategories.map((subcategory) => (
-            <Card key={subcategory.id} className="group hover:shadow-lg transition-shadow">
+            <Card key={subcategory.id} className="group hover:opacity-80 hover:scale-95 cursor-pointer rounded-xl rounded-tl-md hover:shadow-lg transition border border-background-950 text-foreground-100">
+              <Link href={`/${category.id}/${subcategory.id}`}>
               <CardHeader>
-                <CardTitle className="group-hover:text-indigo-600 transition-colors">
-                  <Link href={`/${category.id}/${subcategory.id}`}>{subcategory.name}</Link>
+                <CardTitle className="transition">
+                  {subcategory.icon+" "+subcategory.name}
                 </CardTitle>
-                <CardDescription>{subcategory.description}</CardDescription>
+                <CardDescription className="text-sm text-foreground-800">{subcategory.description}</CardDescription>
               </CardHeader>
+              </Link>
             </Card>
           ))}
         </div>
@@ -86,9 +92,8 @@ export default async function CategoryPage({ params }: Props) {
 
       {/* Articles */}
       {articles.length > 0 && (
-        <div>
-          <h2 className="text-2xl font-bold mb-6">Artículos Relacionados</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {articles.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}

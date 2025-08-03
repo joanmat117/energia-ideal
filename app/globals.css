@@ -2,6 +2,15 @@
 @custom-variant hover (&:hover);
 @custom-variant dark (&:where(.dark, .dark *));
 
+@layer base {
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:opsz,wght@18..144,300..900&display=swap');
+
+  * {
+    @apply outline-ring/50;
+    }
+}
+
+
 @theme inline {
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
@@ -75,7 +84,7 @@
     --color-accent-900: #133595;
     --color-accent-950: #11225a;
 
-
+    --font-merriweather: "Merriweather",serif;
 
 }
 
@@ -208,12 +217,6 @@
     --text-800: #afafaf;           /* Gris oscuro (solo para detalles) */
     --text-900: #a5a5a5;           /* Gris muy oscuro (uso limitado) */
     --text-950: #9b9b9b;           /* Límite de legibilidad en fondos oscuros */
-}
-
-@layer base {
-  * {
-    @apply outline-ring/50;
-    }
 }
 
 html {

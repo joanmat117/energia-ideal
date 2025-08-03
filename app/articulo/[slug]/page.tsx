@@ -1,17 +1,14 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import Image from "next/image"
-import { Clock, User, Calendar } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Calendar } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import Breadcrumbs from "@/components/breadcrumbs"
 import ArticleCard from "@/components/article-card"
 import ArticleIndex from "@/components/article-index"
-import CategoriesData from '@/data/categories.json'
 import { getArticleBySlug, getRelatedArticles, getSubcategoryBySlug, getCategoryBySubcategories } from "@/lib/data"
 import { markdownToHtml, extractHeadings, addIdsToHeadings } from "@/lib/markdown"
-import { nicheArticleText } from "@/data/dataNiche"
+import { nicheArticleText, nicheSubcategoryPage } from "@/data/dataNiche"
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -23,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!article) {
     return {
-      title: "Artículo no encontrado",
+      title: nicheSubcategoryPage.not_article,
     }
   }
 
@@ -61,7 +58,6 @@ export default async function ArticlePage({ params }: Props) {
   if (!article) {
     notFound()
   }
-  // article.subcategory[0]
 
   const category = getCategoryBySubcategories(article.subcategory)
   const subcategory = article.subcategory[0]
@@ -71,8 +67,8 @@ export default async function ArticlePage({ params }: Props) {
   const processedContent = addIdsToHeadings(htmlContent)
 
   const breadcrumbs = [
-    { label: category?.name || "Categoría", href: `/${category?.id || ""}` },
-    { label: subcategory[0] || "Subcategoría", href: `/${category?.id || ""}/${subcategory[0] || ""}` },
+    { label: category?.id || "Categoría", href: `/${category?.id || ""}` },
+    { label: subcategory || "Subcategoría", href: `/${category?.id || ""}/${subcategory || ""}` },
     { label: article.title, href: `/articulo/${article.slug}` },
   ]
 
@@ -129,7 +125,7 @@ export default async function ArticlePage({ params }: Props) {
       {relatedArticles.length > 0 && (
         <section className="mt-16">
           <h2 className="text-3xl font-bold mb-8">{nicheArticleText.recommended}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-8">
             {relatedArticles.map((relatedArticle) => (
               <ArticleCard key={relatedArticle.id} article={relatedArticle} />
             ))}

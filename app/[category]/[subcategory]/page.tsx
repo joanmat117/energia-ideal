@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import Breadcrumbs from "@/components/breadcrumbs"
 import ArticleCard from "@/components/article-card"
 import { getCategoryBySlug, getSubcategoryBySlug, getArticlesBySubcategory } from "@/lib/data"
+import { nicheMetadata, nicheSubcategoryPage } from "@/data/dataNiche"
 
 interface Props {
   params: Promise<{ category: string,subcategory:string }>
@@ -15,20 +16,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!category || !subcategory) {
     return {
-      title: "Página no encontrada",
+      title: nicheSubcategoryPage.not_page,
     }
   }
 
   return {
-    title: `${subcategory.name} - ${category.name} | EnergyHub`,
+    title: `${subcategory.name} - ${category.name} | ${nicheMetadata.web_name}`,
     description: subcategory.description,
     openGraph: {
-      title: `${subcategory.name} - ${category.name} | EnergyHub`,
+      title: `${subcategory.name} - ${category.name} | ${nicheMetadata.web_name}`,
       description: subcategory.description,
       url: `/${category.id}/${subcategory.id}`,
       images: [
         {
-          url: `/placeholder.svg?height=630&width=1200&text=${encodeURIComponent(subcategory.name)}`,
+          url: category.image,
           width: 1200,
           height: 630,
           alt: subcategory.name,
@@ -37,9 +38,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${subcategory.name} - ${category.name} | EnergyHub`,
+      title: `${subcategory.name} - ${category.name} | ${nicheMetadata.web_name}`,
       description: subcategory.description,
-      images: [`/placeholder.svg?height=630&width=1200&text=${encodeURIComponent(subcategory.name)}`],
+      images: [category.image],
     },
   }
 }
@@ -55,24 +56,25 @@ export default async function SubcategoryPage({ params }: Props) {
   }
 
   const breadcrumbs = [
-    { label: category.name, href: `/${category.id}` },
-    { label: subcategory.name, href: `/${category.id}/${subcategory.id}` },
+    { label: category.id, href: `/${category.id}` },
+    { label: subcategory.id, href: `/${category.id}/${subcategory.id}` },
   ]
 
   return (
+    <div>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Breadcrumbs items={breadcrumbs} />
-
-      <div className="mb-12">
+    </div>
+      <div className="mb-12 px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-4xl font-bold mb-4">{subcategory.name}</h1>
-        <p className="text-xl text-gray-600 mb-8">{subcategory.description}</p>
+        <p className="text-xl text-foreground-800 mb-8">{subcategory.description}</p>
       </div>
 
       {/* Articles */}
       {articles.length > 0 ? (
-        <div>
-          <h2 className="text-2xl font-bold mb-6">Artículos en {subcategory.name}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="">
+          <h2 className="text-2xl font-bold mb-6 px-4 sm:px-6 lg:px-8">{subcategory.name}</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 sm:px-6 lg:px-8 gap-8">
             {articles.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
@@ -80,7 +82,7 @@ export default async function SubcategoryPage({ params }: Props) {
         </div>
       ) : (
         <div className="text-center py-12">
-          <p className="text-gray-600 text-lg">No hay artículos disponibles en esta subcategoría aún.</p>
+          <p className="text-foreground-600 text-lg">{nicheSubcategoryPage.not_articles}</p>
         </div>
       )}
     </div>
