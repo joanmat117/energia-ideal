@@ -161,7 +161,7 @@ export const nicheCategories = {
       "id": "marcas",
       "name": "Marcas",
       "description": "Análisis y comparativas de las mejores marcas de generadores y estaciones de energía del mercado.",
-      "image": "https://images.pexels.com/photos/162553/keys-workshop-tool-macro-162553.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "image": "https://i.ibb.co/jZRT2d2R/ilustratin.jpg",
       "subcategories": [
         {
           "id": "ecoflow",
