@@ -18,7 +18,6 @@ export interface Article {
 export interface Subcategory {
   id: string;
   name: string;
-  icon:string;
   description: string;
 }
 
