@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
-import { Loader2, CheckCircle, XCircle, Clock, Globe, Settings } from "lucide-react"
+import { Loader2, CheckCircle, XCircle, Clock } from "lucide-react"
 import { supabase, isSupabaseConfigured } from "@/services/supabase"
 import { nicheCategories } from "@/data/dataNiche"
 
@@ -43,12 +43,6 @@ interface ProgressStep {
   details?: string
 }
 
-interface TranslationSettings {
-  originalLanguage: string
-  targetLanguage: string
-  contentType: string
-}
-
 export default function ArticleForm() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState("")
@@ -69,16 +63,9 @@ export default function ArticleForm() {
   const [jsonData, setJsonData] = useState<any[] | null>(null)
   const [jsonText, setJsonText] = useState("")
 
-  // Estados para el progreso de traducción y subida
+  // Estados para el progreso de subida
   const [progressSteps, setProgressSteps] = useState<ProgressStep[]>([])
   const [showProgress, setShowProgress] = useState(false)
-
-  // Configuración de traducción
-  const [translationSettings, setTranslationSettings] = useState<TranslationSettings>({
-    originalLanguage: "Spanish",
-    targetLanguage: "English",
-    contentType: "seo-optimized post for an informative website",
-  })
 
   useEffect(() => {
     const authStatus = localStorage.getItem("articles-auth")
@@ -137,64 +124,6 @@ export default function ArticleForm() {
     }
   }
 
-  // Función para traducir JSON con Together.xyz API
-  const translateJsonWithTogether = async (jsonContent: any[]): Promise<any[]> => {
-    const togetherApiKey = process.env.NEXT_PUBLIC_TOGETHER_API_KEY
-
-    if (!togetherApiKey) {
-      throw new Error("Together API key no configurada")
-    }
-
-    try {
-      const jsonString = JSON.stringify(jsonContent, null, 2)
-
-      const prompt = `JSON_CONTENT=${jsonString}, ORIGINAL_LANGUAGE=${translationSettings.originalLanguage}, CONTENT_TYPE=${translationSettings.contentType}, TARGET_LANGUAGE=${translationSettings.targetLanguage}
-
-Parse the JSON_CONTENT into ORIGINAL_LANGUAGE. For each property value in the JSON_CONTENT, without changing the property name, identify the key messages, tone, style, and any culturally specific references or idioms. Note any technical terms, brand names, or phrases that should be left untranslated. Translate them into the TARGET_LANGUAGE, adapting any culturally specific references or idioms to resonate with the TARGET_LANGUAGE audience. Ensure the translation maintains the original tone and style appropriate for the CONTENT_TYPE. Only deliver the translated JSON with the exact same structure as the JSON_CONTENT. Do not reply with additional text. Only deliver the JSON.`
-
-      const response = await fetch("https://api.together.xyz/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${togetherApiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
-          messages: [
-            {
-              role: "user",
-              content: prompt,
-            },
-          ],
-        }),
-      })
-
-      if (!response.ok) {
-        throw new Error(`Error de Together.xyz: ${response.status} ${response.statusText}`)
-      }
-
-      const data = await response.json()
-      const translatedContent = data.choices[0].message.content
-
-      // Intentar parsear la respuesta como JSON
-      try {
-        const translatedJson = JSON.parse(translatedContent)
-        return Array.isArray(translatedJson) ? translatedJson : [translatedJson]
-      } catch (parseError) {
-        // Si no es JSON válido, intentar extraer JSON del texto
-        const jsonMatch = translatedContent.match(/\[[\s\S]*\]|\{[\s\S]*\}/)
-        if (jsonMatch) {
-          const extractedJson = JSON.parse(jsonMatch[0])
-          return Array.isArray(extractedJson) ? extractedJson : [extractedJson]
-        }
-        throw new Error("La respuesta de la IA no contiene JSON válido")
-      }
-    } catch (error: any) {
-      console.error("Error en traducción:", error)
-      throw new Error(`Error de traducción: ${error.message}`)
-    }
-  }
-
   // Función para actualizar el progreso
   const updateProgressStep = (stepId: string, status: ProgressStep["status"], details?: string) => {
     setProgressSteps((prev) => prev.map((step) => (step.id === stepId ? { ...step, status, details } : step)))
@@ -205,8 +134,6 @@ Parse the JSON_CONTENT into ORIGINAL_LANGUAGE. For each property value in the JS
     const steps: ProgressStep[] = [
       { id: "validate", label: "Validando datos", status: "pending" },
       { id: "upload-es", label: "Subiendo artículo(s) en español", status: "pending" },
-      { id: "translate", label: `Traduciendo con IA (${translationSettings.targetLanguage})`, status: "pending" },
-      { id: "upload-en", label: `Subiendo artículo(s) en ${translationSettings.targetLanguage}`, status: "pending" },
     ]
 
     setProgressSteps(steps)
@@ -298,51 +225,22 @@ Parse the JSON_CONTENT into ORIGINAL_LANGUAGE. For each property value in the JS
 
       updateProgressStep("upload-es", "success", `ID: ${spanishData[0]?.id}`)
 
-      // Paso 3: Traducir al inglés con Together.xyz
-      updateProgressStep("translate", "loading")
+      // Limpiar formulario
+      setFormData({
+        title: "",
+        description: "",
+        content: "",
+        image: "",
+        subcategory: [],
+      })
+      setErrors({})
 
-      try {
-        const translatedArticles = await translateJsonWithTogether([articleData])
-        const translatedArticle = translatedArticles[0]
+      toast({
+        title: "¡Artículo guardado! ✅",
+        description: "El artículo se ha subido correctamente a la base de datos",
+      })
 
-        updateProgressStep("translate", "success")
-
-        // Paso 4: Subir artículo en inglés
-        updateProgressStep("upload-en", "loading")
-
-        // Generar slug para el título traducido
-        const englishSlug = generateSlug(translatedArticle.title)
-        const englishArticleData = {
-          ...translatedArticle,
-          slug: englishSlug,
-        }
-
-        const { data: englishData, error: englishError } = await supabase
-          .from("articles_en")
-          .insert([englishArticleData])
-          .select()
-
-        if (englishError) {
-          throw new Error(`Error al subir artículo en inglés: ${englishError.message}`)
-        }
-
-        updateProgressStep("upload-en", "success", `ID: ${englishData[0]?.id}`)
-
-        // Limpiar formulario
-        setFormData({
-          title: "",
-          description: "",
-          content: "",
-          image: "",
-          subcategory: [],
-        })
-        setErrors({})
-
-        console.log("Artículos guardados:", { spanish: spanishData[0], english: englishData[0] })
-      } catch (translationError: any) {
-        updateProgressStep("translate", "error", translationError.message)
-        updateProgressStep("upload-en", "error", "No se pudo traducir")
-      }
+      console.log("Artículo guardado:", spanishData[0])
     } catch (error: any) {
       console.error("Error completo:", error)
 
@@ -351,6 +249,12 @@ Parse the JSON_CONTENT into ORIGINAL_LANGUAGE. For each property value in the JS
       } else {
         updateProgressStep("validate", "error", error.message)
       }
+
+      toast({
+        title: "Error al guardar",
+        description: error.message,
+        variant: "destructive",
+      })
     } finally {
       setIsLoading(false)
       // Ocultar progreso después de 5 segundos si todo fue exitoso
@@ -447,7 +351,7 @@ Parse the JSON_CONTENT into ORIGINAL_LANGUAGE. For each property value in the JS
     return errors
   }
 
-  // Subida masiva de artículos con traducción
+  // Subida masiva de artículos
   const handleBulkUpload = async () => {
     if (!jsonData || jsonData.length === 0) {
       toast({
@@ -480,6 +384,11 @@ Parse the JSON_CONTENT into ORIGINAL_LANGUAGE. For each property value in the JS
       if (allErrors.length > 0) {
         updateProgressStep("validate", "error", `${allErrors.length} errores encontrados`)
         console.error("Errores de validación:", allErrors)
+        toast({
+          title: "Errores de validación",
+          description: `Se encontraron ${allErrors.length} errores. Revisa la consola para más detalles.`,
+          variant: "destructive",
+        })
         return
       }
 
@@ -516,46 +425,18 @@ Parse the JSON_CONTENT into ORIGINAL_LANGUAGE. For each property value in the JS
 
       updateProgressStep("upload-es", "success", `${spanishData?.length} artículos`)
 
-      // Paso 3: Traducir todos los artículos con Together.xyz
-      updateProgressStep("translate", "loading")
+      // Limpiar datos
+      setJsonData(null)
+      setJsonText("")
 
-      try {
-        const translatedArticles = await translateJsonWithTogether(articlesToInsert)
+      toast({
+        title: "¡Artículos guardados! ✅",
+        description: `Se han subido ${spanishData?.length} artículos a la base de datos`,
+      })
 
-        updateProgressStep("translate", "success", `${translatedArticles.length} artículos traducidos`)
-
-        // Paso 4: Subir artículos en inglés
-        updateProgressStep("upload-en", "loading")
-
-        // Generar slugs para los títulos traducidos
-        const englishArticlesToInsert = translatedArticles.map((article) => ({
-          ...article,
-          slug: generateSlug(article.title),
-        }))
-
-        const { data: englishData, error: englishError } = await supabase
-          .from("articles_en")
-          .insert(englishArticlesToInsert)
-          .select()
-
-        if (englishError) {
-          throw new Error(`Error al subir artículos en inglés: ${englishError.message}`)
-        }
-
-        updateProgressStep("upload-en", "success", `${englishData?.length} artículos`)
-
-        // Limpiar datos
-        setJsonData(null)
-        setJsonText("")
-
-        console.log(`✅ Proceso completado:`, {
-          spanish: spanishData?.length,
-          english: englishData?.length,
-        })
-      } catch (translationError: any) {
-        updateProgressStep("translate", "error", translationError.message)
-        updateProgressStep("upload-en", "error", "No se pudo traducir")
-      }
+      console.log(`✅ Proceso completado:`, {
+        spanish: spanishData?.length,
+      })
     } catch (error: any) {
       console.error("Error en carga masiva:", error)
 
@@ -564,6 +445,12 @@ Parse the JSON_CONTENT into ORIGINAL_LANGUAGE. For each property value in the JS
       } else {
         updateProgressStep("validate", "error", error.message)
       }
+
+      toast({
+        title: "Error en carga masiva",
+        description: error.message,
+        variant: "destructive",
+      })
     } finally {
       setIsLoading(false)
       // Ocultar progreso después de 10 segundos si todo fue exitoso
@@ -664,12 +551,9 @@ Parse the JSON_CONTENT into ORIGINAL_LANGUAGE. For each property value in the JS
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
-                <CardTitle className="text-2xl font-bold flex items-center gap-2">
-                  Crear Nuevo Artículo
-                  <Globe className="h-5 w-5 text-blue-500" />
-                </CardTitle>
+                <CardTitle className="text-2xl font-bold">Crear Nuevo Artículo</CardTitle>
                 <CardDescription>
-                  Los artículos se subirán automáticamente en español e inglés (traducido con IA)
+                  Los artículos se subirán a la base de datos en español
                 </CardDescription>
               </div>
               <Button
@@ -683,43 +567,6 @@ Parse the JSON_CONTENT into ORIGINAL_LANGUAGE. For each property value in the JS
             </div>
           </CardHeader>
           <CardContent>
-            {/* Configuración de traducción */}
-            <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <div className="flex items-center gap-2 mb-3">
-                <Settings className="h-4 w-4 text-blue-600" />
-                <h3 className="font-semibold text-blue-900">Configuración de Traducción</h3>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="originalLanguage">Idioma Original</Label>
-                  <Input
-                    id="originalLanguage"
-                    value={translationSettings.originalLanguage}
-                    onChange={(e) => setTranslationSettings((prev) => ({ ...prev, originalLanguage: e.target.value }))}
-                    placeholder="Spanish"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="targetLanguage">Idioma de Destino</Label>
-                  <Input
-                    id="targetLanguage"
-                    value={translationSettings.targetLanguage}
-                    onChange={(e) => setTranslationSettings((prev) => ({ ...prev, targetLanguage: e.target.value }))}
-                    placeholder="English"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="contentType">Tipo de Contenido</Label>
-                  <Input
-                    id="contentType"
-                    value={translationSettings.contentType}
-                    onChange={(e) => setTranslationSettings((prev) => ({ ...prev, contentType: e.target.value }))}
-                    placeholder="seo-optimized post for an informative website"
-                  />
-                </div>
-              </div>
-            </div>
-
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Título */}
               <div className="space-y-2">
@@ -811,10 +658,7 @@ Parse the JSON_CONTENT into ORIGINAL_LANGUAGE. For each property value in the JS
                     Procesando...
                   </>
                 ) : (
-                  <>
-                    <Globe className="mr-2 h-4 w-4" />
-                    Guardar Artículo ({translationSettings.originalLanguage} + {translationSettings.targetLanguage})
-                  </>
+                  "Guardar Artículo"
                 )}
               </Button>
 
@@ -828,13 +672,9 @@ Parse the JSON_CONTENT into ORIGINAL_LANGUAGE. For each property value in the JS
               {/* Sección de carga masiva por JSON */}
               <div className="space-y-4 p-4 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
                 <div className="text-center">
-                  <h3 className="text-lg font-semibold text-gray-900 flex items-center justify-center gap-2">
-                    📝 Carga Masiva por JSON
-                    <Globe className="h-4 w-4 text-blue-500" />
-                  </h3>
+                  <h3 className="text-lg font-semibold text-gray-900">📝 Carga Masiva por JSON</h3>
                   <p className="text-sm text-gray-600 mt-1">
-                    Escribe o pega el JSON con múltiples artículos para subirlos en{" "}
-                    {translationSettings.originalLanguage} y {translationSettings.targetLanguage}
+                    Escribe o pega el JSON con múltiples artículos para subirlos en español
                   </p>
                 </div>
 
@@ -892,11 +732,7 @@ Parse the JSON_CONTENT into ORIGINAL_LANGUAGE. For each property value in the JS
                         Procesando {jsonData?.length || 0} artículos...
                       </>
                     ) : (
-                      <>
-                        <Globe className="mr-2 h-4 w-4" />
-                        Subir {jsonData?.length || 0} artículos ({translationSettings.originalLanguage} +{" "}
-                        {translationSettings.targetLanguage})
-                      </>
+                      `Subir ${jsonData?.length || 0} artículos`
                     )}
                   </Button>
 
@@ -938,21 +774,6 @@ Parse the JSON_CONTENT into ORIGINAL_LANGUAGE. For each property value in the JS
                 {!isSupabaseConfigured() && (
                   <p className="text-xs text-yellow-600 mt-1">
                     ⚠️ Configura las variables de entorno NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY
-                  </p>
-                )}
-
-                <div className="flex items-center justify-between text-sm mt-2">
-                  <span className="text-gray-600">Estado de Together.xyz:</span>
-                  <span className="flex items-center">
-                    <div
-                      className={`w-2 h-2 rounded-full mr-2 ${process.env.NEXT_PUBLIC_TOGETHER_API_KEY ? "bg-green-500" : "bg-yellow-500"}`}
-                    ></div>
-                    {process.env.NEXT_PUBLIC_TOGETHER_API_KEY ? "API Key configurada" : "API Key pendiente"}
-                  </span>
-                </div>
-                {!process.env.NEXT_PUBLIC_TOGETHER_API_KEY && (
-                  <p className="text-xs text-yellow-600 mt-1">
-                    ⚠️ Configura la variable NEXT_PUBLIC_TOGETHER_API_KEY para habilitar la traducción
                   </p>
                 )}
               </div>

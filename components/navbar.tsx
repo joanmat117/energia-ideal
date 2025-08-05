@@ -23,7 +23,7 @@ export default function Navbar() {
               <Link
                 key={category.id}
                 href={`/${category.id}`}
-                className=" border-r p-2 transition border-white/50 md:border-r-foreground-900/50 last:border-none whitespace-nowrap hover:bg-accent-950/20 hover:line-through font-medium"
+                className=" border-r p-2 transition border-white/50 md:border-r-foreground-900/50 last:border-none whitespace-nowrap hover:bg-accent-950/20 hover:underline font-medium"
               >
                 {category.name}
               </Link>
