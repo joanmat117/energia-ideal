@@ -20,9 +20,9 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
         <div key={index} className="flex items-center space-x-2">
           <ChevronRight className="w-4 h-4" />
           {index === items.length - 1 ? (
-            <span className="font-bold text-gray-900">{item.label}</span>
+            <span className="font-bold text-gray-900 line-clamp-1">{item.label}</span>
           ) : (
-            <Link href={item.href} className="hover:text-indigo-600 transition-colors">
+            <Link href={item.href} className="hover:text-indigo-600 line-clamp-1 transition-colors">
               {item.label}
             </Link>
           )}

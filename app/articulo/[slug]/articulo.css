@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+#article-content {
+	padding: 0 0.5rem;
+}
+
+#article-content p {
+	font-size: 1.2rem;
+	margin: 1.4rem 0;
+}
+
+#article-content h2 {
+	font-weight: 700;
+	font-size:1.8rem;
+	margin-top:1.5rem;
+	margin-bottom: 1.3rem;	
+}
+
+#article-content h3 {
+	font-weight: 700;
+	font-size:1.5rem;
+	margin-top:1.2rem;
+	margin-bottom: 0.7rem;	
+}
+
+#article-content h4 {
+	font-weight: 800;
+	font-size:1.4rem;
+	margin-top:0.9rem;
+	margin-bottom: 0.7rem;	
+}
+
+#article-content em {
+	font-style: italic;
+	border-bottom: 0.1rem solid var(--accent-600);
+}
+
+
+#article-content ul {
+	list-style: disc;
+	display:flex;
+	gap:0.8rem;
+	flex-direction: column;
+	font-size: 1.2rem;
+}
+
+#article-content li {
+	margin-left: 1.1rem;
+}
+
+#article-content table {
+	border:0.1rem solid;
+	border-radius: 1rem;
+}
+
+#article-content thead {
+	background: var(--text-100);
+	color:var(--background-100);
+}
+
+#article-content th {
+	padding: 0.3rem;
+
+}
+
+#article-content td {
+	padding: 0.3rem;
+}
+
+#article-content tr {
+	border:0.1rem solid;
+
+}
+
+#article-content hr {
+	margin:1rem 3rem;
+	opacity: 0.5;
+}
+
+
+
+
+

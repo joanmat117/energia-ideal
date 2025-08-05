@@ -16,7 +16,7 @@ interface ArticleIndexProps {
 
 export default function ArticleIndex({ headings }: ArticleIndexProps) {
   const [activeHeading, setActiveHeading] = useState<string>("")
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -53,7 +53,7 @@ export default function ArticleIndex({ headings }: ArticleIndexProps) {
   return (
     <>
       {/* Mobile Toggle */}
-      <div className="lg:hidden mb-6">
+      <div className="hidden mb-6">
         <Button variant="outline" onClick={() => setIsOpen(!isOpen)} className="w-full justify-start">
           <List className="w-4 h-4 mr-2" />
           Índice del artículo
@@ -61,23 +61,22 @@ export default function ArticleIndex({ headings }: ArticleIndexProps) {
       </div>
 
       {/* Index Card */}
-      <Card className={`mb-8 ${isOpen ? "block" : "hidden lg:block"}`}>
-        <CardHeader>
+      <Card className={`mb-8 border-background-950 bg-transparent shadow-none max-w-lg ${isOpen ? "block" : "hidden lg:block"}`}>
+        <CardHeader className="p-2">
           <CardTitle className="flex items-center text-lg">
-            <List className="w-5 h-5 mr-2" />
-            Índice del artículo
+            <List className="w-5 h-5 mx-auto" />
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <nav className="space-y-2">
+        <CardContent className="p-3">
+          <nav className="">
             {headings.map((heading) => (
               <button
                 key={heading.id}
                 onClick={() => scrollToHeading(heading.id)}
-                className={`block w-full text-left p-2 rounded text-sm transition-colors ${
+                className={`block w-full text-left p-1 rounded text-xs transition-colors ${
                   activeHeading === heading.id
-                    ? "bg-indigo-100 text-indigo-700 font-medium"
-                    : "text-gray-600 hover:bg-gray-100"
+                    ? "bg-transparent text-accent-700 font-medium"
+                    : "text-foreground-900 hover:bg-gray-100"
                 }`}
               >
                 {heading.text}

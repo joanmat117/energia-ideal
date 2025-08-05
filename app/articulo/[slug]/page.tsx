@@ -9,6 +9,7 @@ import ArticleIndex from "@/components/article-index"
 import { getArticleBySlug, getRelatedArticles, getSubcategoryBySlug, getCategoryBySubcategories } from "@/lib/data"
 import { markdownToHtml, extractHeadings, addIdsToHeadings } from "@/lib/markdown"
 import { nicheArticleText, nicheSubcategoryPage } from "@/data/dataNiche"
+import "./articulo.css"
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -62,7 +63,6 @@ export default async function ArticlePage({ params }: Props) {
   const category = getCategoryBySubcategories(article.subcategory)
   const subcategory = article.subcategory[0]
   const relatedArticles = await getRelatedArticles(article)
-  const headings = extractHeadings(article.content)
   const htmlContent = await markdownToHtml(article.content)
   const processedContent = addIdsToHeadings(htmlContent)
 
@@ -76,21 +76,19 @@ export default async function ArticlePage({ params }: Props) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Breadcrumbs items={breadcrumbs} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 relative lg:grid-cols-4 gap-8">
         {/* Main Content */}
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-3 ">
           <article>
             {/* Article Header */}
             <header className="mb-8">
 
-              <h1 className="text-4xl font-bold mb-4">{article.title}</h1>
+              <h1 className="text-4xl font-bold mb-4 font-merriweather">{article.title}</h1>
 
               <div className="flex items-center text-gray-600 mb-6">
                 <Calendar className="w-5 h-5 mr-2" />
                 <span className="mr-4">{new Date(article.created_at).toLocaleDateString("es-ES") || "no date"}</span>
               </div>
-
-              <p className="text-xl text-gray-600 mb-6">{article.description}</p>
 
               <div className="relative mb-8">
                 <Image
@@ -105,25 +103,15 @@ export default async function ArticlePage({ params }: Props) {
 
             {/* Article Content */}
             <div
-              className="prose max-w-none prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ol:mb-4 prose-li:mb-2"
+              id="article-content" className="max-w-none"
               dangerouslySetInnerHTML={{ __html: processedContent }}
             />
-
-            <Separator className="my-8" />
-
-        {/* Sidebar */}
-        <div className="lg:col-span-1">
-          <div className="sticky top-24 space-y-6">
-            {/* Table of Contents */}
-            <ArticleIndex headings={headings} />
-          </div>
-        </div>
         </article>
       </div>
 
       {/* Related Articles */}
       {relatedArticles.length > 0 && (
-        <section className="mt-16">
+        <section className="mt-5  sticky lg:h-screen lg:overflow-auto top-24">
           <h2 className="text-3xl font-bold mb-8">{nicheArticleText.recommended}</h2>
           <div className="grid grid-cols-1 gap-8">
             {relatedArticles.map((relatedArticle) => (

@@ -1,11 +1,11 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Roboto , Merriweather} from "next/font/google"
+import { Open_Sans , Merriweather} from "next/font/google"
 import "./globals.css"
 import Navbar from "@/components/navbar"
 import { nicheHeaderAndFooter, nicheMetadata } from "@/data/dataNiche"
 
-const roboto = Roboto(
+const opensans = Open_Sans(
   { subsets: ["latin"],fallback:["sans-serif"] }
 )
 
@@ -70,7 +70,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={roboto.className}>
+      <body className={opensans.className}>
         <div className="min-h-screen bg-background-100 text-foreground-50">
           <Navbar />
           <main className="pb-12 min-h-dvh">{children}</main>

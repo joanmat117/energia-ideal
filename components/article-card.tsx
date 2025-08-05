@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Clock, User } from "lucide-react"
+import { Calendar, User } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { Article } from "@/lib/data"
@@ -32,11 +32,11 @@ export default function ArticleCard({ article, featured = false }: ArticleCardPr
 
       <CardHeader className="pb-3 m-0 p-3">
         <div className="flex items-center text-sm text-foreground-900 mb-2">
-          <Clock className="w-4 h-4 mr-1" />
+          <Calendar className="w-4 h-4 mr-1" />
           <span>{date}</span>
         </div>
 
-        <CardTitle className="line-clamp-2 text-2xl font-merriweather group-hover:text-accent-600 transition-colors">
+        <CardTitle className="line-clamp-3 text-2xl font-merriweather group-hover:text-accent-600 transition-colors">
           {article.title}
         </CardTitle>
 

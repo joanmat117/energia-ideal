@@ -4,7 +4,7 @@
 
 @layer base {
   @import url('https://fonts.googleapis.com/css2?family=Merriweather:opsz,wght@18..144,300..900&display=swap');
-
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300..800&display=swap');
   * {
     @apply outline-ring/50;
     }
@@ -85,6 +85,7 @@
     --color-accent-950: #11225a;
 
     --font-merriweather: "Merriweather",serif;
+    --font-opensans: "Open Sans",sans-serif;
 
 }
 
@@ -146,18 +147,17 @@
     --text-900: #5a5a5a;          
     --text-950: #646464; 
     
-    --accent-50: #fefde8;
-    --accent-100: #fffcc2;
-    --accent-200: #fff687;
-    --accent-300: #ffe943;
-    --accent-400: #ffd815;
-    --accent-500: #efbe03;
-    --accent-600: #ce9300;
-    --accent-700: #a46804;
-    --accent-800: #88510b;
-    --accent-900: #734210;
-    --accent-950: #432205;
-
+    --accent-50: #edf6ff;
+    --accent-100: #d7e9ff;
+    --accent-200: #b9daff;
+    --accent-300: #88c4ff;
+    --accent-400: #50a3ff;
+    --accent-500: #287dff;
+    --accent-600: #0a57ff;
+    --accent-700: #0a45eb;
+    --accent-800: #0f38be;
+    --accent-900: #133595;
+    --accent-950: #11225a;
 
 }
 
@@ -206,6 +206,7 @@
     --background-900: #404040;      /* Negro luminoso */
     --background-950: #454545;      /* Límite antes del gris */
 
+  
     --text-50: #ffffff;            /* Blanco puro (máximo contraste) */
     --text-100: #f5f5f5;           /* Blanco roto (para texto primario) */
     --text-200: #ebebeb;           /* Blanco suave */

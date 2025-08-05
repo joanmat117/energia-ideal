@@ -7,7 +7,7 @@ import { nicheHomeText } from "@/data/dataNiche"
 
 export default async function HomePage() {
   const featuredArticles = await getFeaturedArticles()
-  const latestArticles = await getLatestArticles()
+  const latestArticles = await getLatestArticles(8)
 
   return (
     <div className="min-h-screen">
@@ -74,22 +74,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Articles */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto  lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-8">{nicheHomeText.featured_articles_section}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredArticles.map((article) => (
-              <ArticleCard featured key={article.id} article={article} />
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Latest Articles */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto ">
-          <h2 className="text-3xl font-bold text-center mb-12">{nicheHomeText.last_articles_section}</h2>
+      <section className="py-8">
+        <div className="max-w-7xl mx-auto lg:px-8 ">
+          <h2 className="text-3xl font-bold text-center mb-8">{nicheHomeText.last_articles_section}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {latestArticles.map((article) => (
               <ArticleCard key={article.id} article={article} />

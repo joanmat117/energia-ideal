@@ -18,12 +18,12 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="flex items-center [scrollbar-width:none] md:[scrollbar-width:2px] mx-auto pb-1 w-fit max-w-full overflow-auto">
+          <div className="flex items-center bg-accent-700 text-white md:bg-white md:text-inherit [scrollbar-width:none] md:[scrollbar-width:2px] mx-auto py-1 w-fit max-w-full overflow-auto">
             {categories.map((category) => (
               <Link
                 key={category.id}
                 href={`/${category.id}`}
-                className=" border-r p-2 transition border-r-foreground-900/50 last:border-none whitespace-nowrap hover:bg-foreground-950/20 font-medium"
+                className=" border-r p-2 transition border-white/50 md:border-r-foreground-900/50 last:border-none whitespace-nowrap hover:bg-accent-950/20 hover:line-through font-medium"
               >
                 {category.name}
               </Link>
