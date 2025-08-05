@@ -16,7 +16,7 @@ export default function ArticleCard({ article, featured = false }: ArticleCardPr
   
   return (
     <Card className={`group transition border-none overflow-hidden rounded-none sm:rounded-lg cursor-pointer`}>
-      <Link href={`/articulo/${article.slug}`}>
+      <Link href={`/article/${article.slug}`}>
         <div className="relative overflow-hidden">
           <Image
             src={article.image || "/placeholder.svg"}
