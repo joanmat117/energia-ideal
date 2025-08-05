@@ -87,7 +87,7 @@ export default function RootLayout({
                   <h4 className="font-semibold mb-4">Legal</h4>
                   <ul className="space-y-2 text-gray-200">
                     <li>
-                      <a href="/privacy-plicy.html" className="hover:text-white">
+                      <a href="/privacy-policy.html" className="hover:text-white">
                         Privacy Policy
                       </a>
                     </li>
