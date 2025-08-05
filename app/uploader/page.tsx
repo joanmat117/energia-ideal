@@ -110,7 +110,7 @@ export default function ArticleForm() {
 
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault()
-    if (password === process.env.NEXT_PUBLIC_PASSWORD_UPLOADER) {
+    if (password === process.env.PASSWORD_UPLOADER) {
       setIsAuthenticated(true)
       localStorage.setItem("articles-auth", "authenticated")
       setAuthError("")
@@ -1089,7 +1089,7 @@ export default function ArticleForm() {
                   </div>
                   {!isSupabaseConfigured() && (
                     <p className="text-xs text-yellow-600 mt-1">
-                      ⚠️ Configura las variables de entorno NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY
+                      ⚠️ Configura las variables de entorno UPABASE_URL y SUPABASE_ANON_KEY
                     </p>
                   )}
                 </div>
