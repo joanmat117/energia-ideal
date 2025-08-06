@@ -102,6 +102,22 @@ export default function ArticleForm() {
     }
   }, [isAuthenticated, currentPage, searchTerm])
 
+  // Función para generar descripción automática desde el contenido
+  const generateAutoDescription = (content: string): string => {
+    if (!content.trim()) return ""
+    
+    // Limpiar el contenido de saltos de línea y espacios extra
+    const cleanContent = content.trim().replace(/\s+/g, " ")
+    
+    // Dividir en palabras y tomar las primeras 20
+    const words = cleanContent.split(" ")
+    const first20Words = words.slice(0, 20)
+    
+    // Si el contenido tiene más de 20 palabras, agregar "..."
+    const description = first20Words.join(" ")
+    return words.length > 20 ? `${description}...` : description
+  }
+
   // Truncar texto para mostrar en la tabla  
   const truncateText = (text: string, maxLength: number = 100): string => {
     if (!text) return ""
@@ -185,9 +201,7 @@ export default function ArticleForm() {
       newErrors.title = "El título es requerido"
     }
 
-    if (!formData.description.trim()) {
-      newErrors.description = "La descripción es requerida"
-    }
+    // La descripción ya no es requerida - se generará automáticamente si está vacía
 
     if (!formData.content.trim()) {
       newErrors.content = "El contenido es requerido"
@@ -284,11 +298,17 @@ export default function ArticleForm() {
 
       const slug = generateSlug(formData.title)
       const processedContent = formData.content.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
-      const processedDescription = formData.description.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
+      
+      // Generar descripción automática si está vacía
+      let processedDescription = formData.description.trim()
+      if (!processedDescription) {
+        processedDescription = generateAutoDescription(processedContent)
+      }
+      processedDescription = processedDescription.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
 
       const articleData = {
         title: formData.title.trim(),
-        description: processedDescription.trim(),
+        description: processedDescription,
         content: processedContent.trim(),
         image: formData.image.trim(),
         subcategory: formData.subcategory,
@@ -481,13 +501,17 @@ export default function ArticleForm() {
       const articlesToInsert = jsonData.map((article) => {
         const slug = article.slug || generateSlug(article.title)
         const processedContent = article.content.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
-        const processedDescription = article.description
-          ? article.description.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
-          : article.title
+        
+        // Generar descripción automática si no existe o está vacía
+        let processedDescription = article.description?.trim()
+        if (!processedDescription) {
+          processedDescription = generateAutoDescription(processedContent)
+        }
+        processedDescription = processedDescription.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
 
         return {
           title: article.title.trim(),
-          description: processedDescription.trim(),
+          description: processedDescription,
           content: processedContent.trim(),
           image: article.image.trim(),
           subcategory: article.subcategory,
@@ -604,13 +628,17 @@ export default function ArticleForm() {
       // Generar slug actualizado
       const slug = editingArticle.slug || generateSlug(editingArticle.title)
       const processedContent = editingArticle.content.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
-      const processedDescription = editingArticle.description 
-        ? editingArticle.description.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
-        : editingArticle.title
+      
+      // Generar descripción automática si no existe o está vacía
+      let processedDescription = editingArticle.description?.trim()
+      if (!processedDescription) {
+        processedDescription = generateAutoDescription(processedContent)
+      }
+      processedDescription = processedDescription.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
 
       const updatedArticle = {
         title: editingArticle.title.trim(),
-        description: processedDescription.trim(),
+        description: processedDescription,
         content: processedContent.trim(),
         image: editingArticle.image?.trim() || "",
         subcategory: editingArticle.subcategory,
@@ -773,16 +801,19 @@ export default function ArticleForm() {
 
                 {/* Descripción */}
                 <div>
-                  <Label htmlFor="edit-description">Descripción</Label>
+                  <Label htmlFor="edit-description">Descripción (opcional)</Label>
                   <Textarea
                     id="edit-description"
                     value={editingArticle.description || ""}
                     onChange={(e) => setEditingArticle((prev: Article | null) => 
                       prev ? { ...prev, description: e.target.value } : null
                     )}
-                    placeholder="Descripción del artículo"
+                    placeholder="Descripción del artículo (si se deja vacía, se generará automáticamente)"
                     rows={3}
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    💡 Si dejas este campo vacío, se usarán las primeras 20 palabras del contenido
+                  </p>
                 </div>
 
                 {/* Imagen */}
@@ -900,16 +931,19 @@ export default function ArticleForm() {
 
                 {/* Descripción */}
                 <div className="space-y-2">
-                  <Label htmlFor="description">Descripción *</Label>
+                  <Label htmlFor="description">Descripción (opcional)</Label>
                   <Textarea
                     id="description"
                     value={formData.description}
                     onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
-                    placeholder="Ingresa una descripción del artículo&#10;Puedes usar múltiples líneas"
+                    placeholder="Ingresa una descripción del artículo (si se deja vacía, se generará automáticamente)&#10;Puedes usar múltiples líneas"
                     className={errors.description ? "border-red-500" : ""}
                     rows={3}
                   />
                   {errors.description && <p className="text-sm text-red-500">{errors.description}</p>}
+                  <p className="text-xs text-gray-500">
+                    💡 Si dejas este campo vacío, se usarán automáticamente las primeras 20 palabras del contenido
+                  </p>
                 </div>
 
                 {/* Imagen */}
@@ -1007,7 +1041,7 @@ export default function ArticleForm() {
 [
   {
     "title": "Título del artículo",
-    "description": "Descripción del artículo",
+    "description": "Descripción del artículo (opcional)",
     "slug": "titulo-del-articulo",
     "subcategory": ["gasolina", "emergencias"],
     "content": "Contenido completo...",
@@ -1032,7 +1066,7 @@ export default function ArticleForm() {
                         <strong>Campos opcionales:</strong> description, slug
                       </p>
                       <p>
-                        💡 <strong>Tip:</strong> El slug se genera automáticamente si no lo incluyes
+                        💡 <strong>Tip:</strong> El slug y descripción se generan automáticamente si no los incluyes
                       </p>
                     </div>
 

@@ -109,7 +109,7 @@ export default async function ArticlePage({ params }: Props) {
 
       {/* Related Articles */}
       {relatedArticles.length > 0 && (
-        <section className="mt-5  sticky lg:h-screen lg:overflow-auto top-0">
+        <section className="py-5  sticky lg:h-screen lg:overflow-auto top-0">
           <h2 className="text-3xl mt-20 font-bold mb-8">{nicheArticleText.recommended}</h2>
           <div className="grid grid-cols-1 gap-8">
             {relatedArticles.map((relatedArticle) => (

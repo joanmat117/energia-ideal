@@ -73,15 +73,14 @@ export default async function CategoryPage({ params }: Props) {
 
       {/* Subcategories */}
       <div className="mb-12 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
+        <div className="flex flex-wrap gap-6 ">
           {category.subcategories.map((subcategory) => (
-            <Card key={subcategory.id} className="group hover:opacity-80 hover:scale-95 cursor-pointer rounded-xl rounded-tl-md hover:shadow-lg transition border border-background-950 hover:border-accent-600 text-foreground-100">
+            <Card key={subcategory.id} className=" group hover:opacity-80 cursor-pointer rounded-xl rounded-tl-md hover:border-2 hover:shadow-lg transition border border-background-950 hover:border-accent-600 text-foreground-100">
               <Link href={`/${category.id}/${subcategory.id}`}>
               <CardHeader>
                 <CardTitle className="transition">
                   {subcategory.name}
                 </CardTitle>
-                <CardDescription className="text-sm text-foreground-800">{subcategory.description}</CardDescription>
               </CardHeader>
               </Link>
             </Card>
