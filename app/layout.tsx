@@ -71,6 +71,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
+    <head>
+    <meta name="apple-mobile-web-app-title" content="Energia Ideal" />
+    </head>
       <body className={opensans.className}>
         <div className="min-h-screen bg-background-100 text-foreground-50">
           <Navbar />
