@@ -4,7 +4,7 @@ import { categoriesArray, getAllSlugsAndCreatedAt} from '@/lib/data'
 
 const baseUrl = nicheMetadata.base_url;
 
-export const revalidate = 3600 * 6; 
+export const revalidate = 21600; 
 
 function getSubcategorySitemapEntries() {
   const subcategoryEntries:{url:any,lastModified:any,changeFrequency:string,priority:number}[] = [];
