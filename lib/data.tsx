@@ -32,6 +32,13 @@ export interface Category {
 // Las categorías se siguen cargando desde el JSON local, no desde Supabase
 export const categories: Category[] = categoriesData.categories;
 
+export const categoriesArray = categoriesData.categories.map(category=>category.id)
+export const subcategoriesArray = categoriesData.categories.flatMap(category=>{
+  return category.subcategories.map(subcategory=>{
+    return subcategory.id
+  })
+})
+
 /**
  * Obtiene un artículo por su slug.
  * @param slug El slug del artículo a buscar.
@@ -180,6 +187,23 @@ export async function getAllSlugs(): Promise<string[]> {
     return [];
   }
   return data.map((item: { slug: string }) => item.slug);
+}
+
+export async function getAllSlugsAndCreatedAt() {
+  const { data, error } = await supabase
+    .from(TABLE_ARTICLES)
+    .select('slug, created_at'); // Ahora seleccionamos ambas columnas [1, 2]
+
+  if (error) {
+    console.error('Error al obtener slugs y created_at:', error);
+    return [];
+  }
+
+  // Mapeamos los datos para asegurar que tengan el tipo correcto
+  return data.map((item: { slug: string; created_at: string }) => ({
+    slug: item.slug,
+    created_at: item.created_at,
+  }));
 }
 
 /**

@@ -12,13 +12,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
 import { Loader2, CheckCircle, XCircle, Clock, Search, Edit, Trash2, ChevronLeft, ChevronRight } from "lucide-react"
 import { supabase, isSupabaseConfigured } from "@/services/supabase"
-import { nicheCategories } from "@/data/dataNiche"
+import { subcategoriesArray } from "@/lib/data"
 
-const SUBCATEGORIES = nicheCategories.categories.flatMap(category=>{
-  return category.subcategories.map(subcategory=>{
-    return subcategory.id
-  })
-})
+const SUBCATEGORIES = subcategoriesArray
 
 interface FormData {
   title: string
