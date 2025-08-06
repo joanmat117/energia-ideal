@@ -1,12 +1,10 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import ArticleCard from "@/components/article-card"
-import { getFeaturedArticles, getLatestArticles, categories } from "@/lib/data"
+import {  getLatestArticles, categories } from "@/lib/data"
 import { nicheHomeText } from "@/data/dataNiche"
 
 export default async function HomePage() {
-  const featuredArticles = await getFeaturedArticles()
   const latestArticles = await getLatestArticles(8)
 
   return (

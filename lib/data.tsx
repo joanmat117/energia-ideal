@@ -99,13 +99,6 @@ export async function getArticlesBySubcategory(categorySlug: string, subcategory
   return data as Article[];
 }
 
-/**
- * Obtiene artículos destacados.
- * NOTA: Tu tabla no tiene 'featured'. Asumo que si quieres 'destacados', tendrías una columna boolean 'is_featured'
- * o un mecanismo para marcarlos. Como no la tienes, esta función devuelve los 3 artículos más recientes como "destacados".
- * CONSIDERAR AÑADIR UNA COLUMNA 'is_featured' (boolean) A TU TABLA DE ARTÍCULOS EN SUPABASE.
- * @returns Un array de artículos "destacados".
- */
 export async function getFeaturedArticles(): Promise<Article[]> {
   const { data, error } = await supabase
     .from(TABLE_ARTICLES)
@@ -127,7 +120,7 @@ export async function getFeaturedArticles(): Promise<Article[]> {
  * @returns Un array de artículos relacionados.
  * NOTA: Simulamos relación buscando artículos que compartan alguna de las subcategorías del artículo actual.
  */
-export async function getRelatedArticles(currentArticle: Article, limit = 3): Promise<Article[]> {
+export async function getRelatedArticles(currentArticle: Article, limit = 4): Promise<Article[]> {
   // Si el artículo actual no tiene subcategorías, no podemos encontrar relacionados por ese criterio
   if (!currentArticle.subcategory || currentArticle.subcategory.length === 0) {
     return [];

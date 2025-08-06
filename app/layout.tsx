@@ -3,7 +3,8 @@ import type { Metadata } from "next"
 import { Open_Sans , Merriweather} from "next/font/google"
 import "./globals.css"
 import Navbar from "@/components/navbar"
-import { nicheHeaderAndFooter, nicheMetadata } from "@/data/dataNiche"
+import { nicheMetadata } from "@/data/dataNiche"
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const opensans = Open_Sans(
   { subsets: ["latin"],fallback:["sans-serif"] }
@@ -106,6 +107,7 @@ export default function RootLayout({
           </footer>
         </div>
       </body>
+      <GoogleAnalytics gaId="G-LZ5KNC37JZ"/>
     </html>
   )
 }
