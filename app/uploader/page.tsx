@@ -13,6 +13,8 @@ import { useToast } from "@/hooks/use-toast"
 import { Loader2, CheckCircle, XCircle, Clock, Search, Edit, Trash2, ChevronLeft, ChevronRight } from "lucide-react"
 import { supabase, isSupabaseConfigured } from "@/services/supabase"
 import { subcategoriesArray } from "@/lib/data"
+import Link from "next/link"
+import { nicheMetadata } from "@/data/dataNiche"
 
 const SUBCATEGORIES = subcategoriesArray
 
@@ -764,7 +766,7 @@ export default function ArticleForm() {
 
       {/* Modal de edición */}
       {showEditDialog && editingArticle && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2">
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
@@ -817,7 +819,7 @@ export default function ArticleForm() {
                   <Label htmlFor="edit-image">URL de la Imagen</Label>
                   <Input
                     id="edit-image"
-                    value={editingArticle.image || ""}
+                    value={editingArticle.image || "https://placehold.co/600x400"}
                     onChange={(e) => setEditingArticle((prev: Article | null) => 
                       prev ? { ...prev, image: e.target.value } : null
                     )}
@@ -862,7 +864,7 @@ export default function ArticleForm() {
                       prev ? { ...prev, content: e.target.value } : null
                     )}
                     placeholder="Contenido del artículo"
-                    rows={8}
+                    rows={12}
                   />
                 </div>
 
@@ -877,7 +879,7 @@ export default function ArticleForm() {
                   >
                     Cancelar
                   </Button>
-                  <Button onClick={handleSaveEditedArticle}>
+                  <Button className="hover:invert active:scale-95" onClick={handleSaveEditedArticle}>
                     Guardar Cambios
                   </Button>
                 </div>
@@ -1020,7 +1022,6 @@ export default function ArticleForm() {
                   <div className="text-center">
                     <h3 className="text-lg font-semibold text-gray-900">📝 Carga Masiva por JSON</h3>
                     <p className="text-sm text-gray-600 mt-1">
-                      Escribe o pega el JSON con múltiples artículos para subirlos en español
                     </p>
                   </div>
 
@@ -1042,12 +1043,6 @@ export default function ArticleForm() {
     "subcategory": ["gasolina", "emergencias"],
     "content": "Contenido completo...",
     "image": "https://ejemplo.com/imagen.jpg"
-  },
-  {
-    "title": "Otro artículo",
-    "subcategory": ["solares", "casa"],
-    "content": "Más contenido...",
-    "image": "https://ejemplo.com/imagen2.jpg"
   }
 ]`}
                       className="min-h-[200px] font-mono text-sm"
@@ -1067,6 +1062,7 @@ export default function ArticleForm() {
                     </div>
 
                     <Button
+                      type="button"
                       onClick={handleBulkUpload}
                       disabled={!jsonData || isLoading}
                       className="w-full"
@@ -1186,9 +1182,11 @@ export default function ArticleForm() {
                     <tbody>
                       {articles.map((article) => (
                         <tr key={article.id} className="hover:bg-gray-50">
-                          <td className="border border-gray-200 px-4 py-2">
+                          <td className="border border-gray-200">
+                            <Link className="px-4 py-2" href={nicheMetadata.base_url +"/article/"+article.slug}>
                             <div className="font-medium">{truncateText(article.title, 50)}</div>
                             <div className="text-xs text-gray-500">Slug: {article.slug}</div>
+                            </Link>
                           </td>
                           <td className="border border-gray-200 px-4 py-2">
                             {truncateText(article.description, 80)}
