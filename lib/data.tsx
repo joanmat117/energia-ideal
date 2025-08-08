@@ -63,8 +63,11 @@ export async function getArticleBySlug(slug: string): Promise<Article | undefine
  * @param categoryId El ID de la categoría principal.
  * @returns Un array de artículos.
  */
-export async function getArticlesByCategory(categoryId: string): Promise<Article[]> {
-  // Primero, encontramos las subcategorías asociadas a esta categoría principal
+export async function getArticlesByCategory(
+  categoryId: string,
+  limit: number,
+  offset: number
+): Promise<Article[]> {
   const targetCategory = categories.find(cat => cat.id === categoryId);
   if (!targetCategory) {
     console.warn(`Categoría "${categoryId}" no encontrada.`);
@@ -76,8 +79,9 @@ export async function getArticlesByCategory(categoryId: string): Promise<Article
   const { data, error } = await supabase
     .from(TABLE_ARTICLES)
     .select('*')
-    .overlaps('subcategory', subcategoryIdsInTargetCategory) // Buscar artículos cuya subcategory (array) se solape con los IDs de subcategoría de la categoría principal
-    .order('created_at', { ascending: false });
+    .overlaps('subcategory', subcategoryIdsInTargetCategory)
+    .order('created_at', { ascending: false })
+    .range(offset, offset + limit - 1);
 
   if (error) {
     console.error(`Error al obtener artículos por categoría "${categoryId}":`, error);
@@ -86,18 +90,17 @@ export async function getArticlesByCategory(categoryId: string): Promise<Article
   return data as Article[];
 }
 
-/**
- * Obtiene artículos filtrados por una subcategoría específica.
- * @param categorySlug El slug de la categoría principal (no se usa directamente en la consulta a DB, pero útil para validación/contexto).
- * @param subcategorySlug El slug de la subcategoría a buscar.
- * @returns Un array de artículos.
- */
-export async function getArticlesBySubcategory(categorySlug: string, subcategorySlug: string): Promise<Article[]> {
+export async function getArticlesBySubcategory(
+  subcategorySlug: string,
+  limit: number,
+  offset: number
+): Promise<Article[]> {
   const { data, error } = await supabase
     .from(TABLE_ARTICLES)
     .select('*')
-    .contains('subcategory', [subcategorySlug]) // Busca el subcategorySlug dentro del array 'subcategory'
-    .order('created_at', { ascending: false });
+    .contains('subcategory', [subcategorySlug])
+    .order('created_at', { ascending: false })
+    .range(offset, offset + limit - 1);
 
   if (error) {
     console.error(`Error al obtener artículos por subcategoría "${subcategorySlug}":`, error);
@@ -155,9 +158,9 @@ export async function getRelatedArticles(currentArticle: Article, limit = 4): Pr
  * @param slug El slug de la categoría a buscar.
  * @returns La categoría o undefined si no se encuentra.
  */
-export function getCategoryBySlug(slug: string): Category | undefined {
+export function getCategoryBySlug(slug: string): Category{
   // Las categorías no se obtienen de Supabase, sino de 'categoriesData'
-  return categories.find((category) => category.id === slug); // Usamos 'id' en lugar de 'slug' para el match
+  return categories.find((category) => category.id === slug) || categories[0]; // Usamos 'id' en lugar de 'slug' para el match
 }
 
 /**
@@ -167,10 +170,10 @@ export function getCategoryBySlug(slug: string): Category | undefined {
  * @param subcategorySlug El slug de la subcategoría a buscar.
  * @returns La subcategoría o undefined si no se encuentra.
  */
-export function getSubcategoryBySlug(categorySlug: string, subcategorySlug: string): Subcategory | undefined {
+export function getSubcategoryBySlug(categorySlug: string, subcategorySlug: string): Subcategory {
   const category = getCategoryBySlug(categorySlug);
   // Las subcategorías no se obtienen de Supabase
-  return category?.subcategories.find((sub) => sub.id === subcategorySlug); // Usamos 'id' en lugar de 'slug' para el match
+  return category.subcategories.find((sub) => sub.id === subcategorySlug) || category.subcategories[0]; // Usamos 'id' en lugar de 'slug' para el match
 }
 
 /**

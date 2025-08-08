@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import type { Metadata } from "next"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import Breadcrumbs from "@/components/breadcrumbs"
-import ArticleCard from "@/components/article-card"
 import { getCategoryBySlug, getArticlesByCategory } from "@/lib/data"
 import { nicheCategoryPage, nicheMetadata, nicheSubcategoryPage } from "@/data/dataNiche"
+import InfiniteScrollComponent from "@/components/InfiniteScrollComponent"
 interface Props {
   params: Promise<{ category: string }>
 }
@@ -48,13 +48,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CategoryPage({ params }: Props) {
   const { category: categorySlug } = await params
   const category = getCategoryBySlug(categorySlug)
-  const articles = await getArticlesByCategory(categorySlug)
+  const initialArticles = await getArticlesByCategory(category.id,5, 0);
 
   if (!category) {
     notFound()
   }
 
   const breadcrumbs = [{ label: category.id, href: `/${category.id}` }]
+
+  const fetchMoreArticles = async (limit: number, offset: number) => {
+    'use server'; 
+    return getArticlesByCategory(category.id, limit, offset);
+  };
+
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -75,10 +81,10 @@ export default async function CategoryPage({ params }: Props) {
       <div className="mb-12 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap gap-3 ">
           {category.subcategories.map((subcategory) => (
-            <Card key={subcategory.id} className=" group shadow-none px-4 py-4 text-sm hover:opacity-80 cursor-pointer rounded-lg  transition border border-background-950 hover:border-accent-600 text-foreground-100">
+            <Card key={subcategory.id} className=" group shadow-none px-3 py-2 text-sm hover:opacity-80 cursor-pointer rounded-lg  transition border border-background-950 hover:border-accent-600 text-foreground-100">
               <Link href={`/${category.id}/${subcategory.id}`}>
               <CardHeader className="p-0">
-                <CardTitle className="transition font-medium">
+                <CardTitle className="transition text-sm font-medium">
                   {subcategory.name}
                 </CardTitle>
               </CardHeader>
@@ -89,15 +95,13 @@ export default async function CategoryPage({ params }: Props) {
       </div>
 
       {/* Articles */}
-      {articles.length > 0 && (
+
         <div className="sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
+      <InfiniteScrollComponent initialData={initialArticles} fetchMore={fetchMoreArticles} />
           </div>
         </div>
-      )}
+
     </div>
   )
 }

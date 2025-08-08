@@ -4,6 +4,7 @@ import Breadcrumbs from "@/components/breadcrumbs"
 import ArticleCard from "@/components/article-card"
 import { getCategoryBySlug, getSubcategoryBySlug, getArticlesBySubcategory } from "@/lib/data"
 import { nicheMetadata, nicheSubcategoryPage } from "@/data/dataNiche"
+import InfiniteScrollComponent from "@/components/InfiniteScrollComponent"
 
 interface Props {
   params: Promise<{ category: string,subcategory:string }>
@@ -49,7 +50,7 @@ export default async function SubcategoryPage({ params }: Props) {
   const { category: categorySlug,subcategory: subcategorySlug} = await params; 
   const category = getCategoryBySlug(categorySlug)
   const subcategory = getSubcategoryBySlug(categorySlug, subcategorySlug)
-  const articles = await getArticlesBySubcategory(categorySlug, subcategorySlug)
+  const initialArticles = await getArticlesBySubcategory(subcategory.id,5, 0)
 
   if (!category || !subcategory) {
     notFound()
@@ -59,6 +60,11 @@ export default async function SubcategoryPage({ params }: Props) {
     { label: category.id, href: `/${category.id}` },
     { label: subcategory.id, href: `/${category.id}/${subcategory.id}` },
   ]
+
+  const fetchMoreArticles = async (limit: number, offset: number) => {
+    'use server'; 
+    return getArticlesBySubcategory(subcategory.id, limit, offset);
+  };
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -71,19 +77,11 @@ export default async function SubcategoryPage({ params }: Props) {
       </div>
 
       {/* Articles */}
-      {articles.length > 0 ? (
-        <div className="">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 sm:px-6 lg:px-8 gap-8">
-            {articles.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
+      <div className="sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <InfiniteScrollComponent initialData={initialArticles} fetchMore={fetchMoreArticles} />
           </div>
-        </div>
-      ) : (
-        <div className="text-center py-12">
-          <p className="text-foreground-600 text-lg">{nicheSubcategoryPage.not_articles}</p>
-        </div>
-      )}
+      </div>
     </div>
   )
 }
