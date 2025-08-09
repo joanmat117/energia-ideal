@@ -819,7 +819,7 @@ export default function ArticleForm() {
                   <Label htmlFor="edit-image">URL de la Imagen</Label>
                   <Input
                     id="edit-image"
-                    value={editingArticle.image || "https://placehold.co/600x400"}
+                    value={editingArticle.image || ""}
                     onChange={(e) => setEditingArticle((prev: Article | null) => 
                       prev ? { ...prev, image: e.target.value } : null
                     )}
