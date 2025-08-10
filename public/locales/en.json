@@ -1,0 +1,239 @@
+{
+  "tableDB": "articles",
+  "Categories": {
+    "categories": [
+      {
+        "id": "generadores-electricos",
+        "name": "Electric Generators",
+        "description": "Everything about electric generators for home, camping, and emergencies",
+        "image": "https://images.pexels.com/photos/18816918/pexels-photo-18816918/free-photo-of-technicians-tinkering-with-a-power-generator.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "subcategories": [
+          {
+            "id": "gasolina",
+            "name": "Gasoline",
+            "description": "Gasoline generators for domestic and commercial use"
+          },
+          {
+            "id": "inverter",
+            "name": "Inverter",
+            "description": "Inverter generators with advanced technology"
+          },
+          {
+            "id": "solares",
+            "name": "Solar",
+            "description": "Solar generators and renewable energy"
+          },
+          {
+            "id": "casa",
+            "name": "For Home",
+            "description": "Ideal generators for residential use"
+          },
+          {
+            "id": "camping",
+            "name": "Camping",
+            "description": "Portable generators for outdoor activities"
+          },
+          {
+            "id": "emergencias",
+            "name": "Emergencies",
+            "description": "Backup generators for critical situations"
+          },
+          {
+            "id": "mantenimiento",
+            "name": "Maintenance",
+            "description": "Care and maintenance of generators"
+          },
+          {
+            "id": "errores-comunes",
+            "name": "Common Errors",
+            "description": "Frequent problems and solutions"
+          }
+        ]
+      },
+      {
+        "id": "energia-solar",
+        "name": "Solar Energy",
+        "description": "Solar panels, kits, and installations to harness the sun's energy",
+        "image": "https://i.ibb.co/zWY50hkn/web2.jpg",
+        "subcategories": [
+          {
+            "id": "paneles-casa",
+            "name": "Solar Panels for Home",
+            "description": "Residential solar panels and installation"
+          },
+          {
+            "id": "kits-portatiles",
+            "name": "Portable Kits",
+            "description": "Portable solar kits for camping and travel"
+          },
+          {
+            "id": "instalacion-costos",
+            "name": "Installation and Costs",
+            "description": "Installation guide and cost analysis"
+          }
+        ]
+      },
+      {
+        "id": "estaciones-portatiles",
+        "name": "Portable Power Stations",
+        "description": "Portable power stations to power your devices",
+        "image": "https://i.ibb.co/YFFdvvSg/web.jpg",
+        "subcategories": [
+          {
+            "id": "ecoflow",
+            "name": "EcoFlow",
+            "description": "EcoFlow power stations"
+          },
+          {
+            "id": "champion",
+            "name": "Champion",
+            "description": "Champion power stations"
+          },
+          {
+            "id": "comparativas",
+            "name": "Comparisons",
+            "description": "Comparison between different brands and models"
+          },
+          {
+            "id": "trucos-aprovechamiento",
+            "name": "Usage Tips",
+            "description": "Tips to maximize the use of your station"
+          }
+        ]
+      },
+      {
+        "id": "guias-consejos",
+        "name": "Guides",
+        "description": "Complete guides and expert advice on energy",
+        "image": "https://i.ibb.co/bj5xq9vb/pexels-cristian-rojas-8853502.jpg",
+        "subcategories": [
+          {
+            "id": "que-elegir",
+            "name": "What to Choose",
+            "description": "Guides to choosing the right equipment"
+          },
+          {
+            "id": "ahorro-energetico",
+            "name": "Energy Saving",
+            "description": "Tips to reduce energy consumption"
+          },
+          {
+            "id": "soluciones-apagones",
+            "name": "Blackout Solutions",
+            "description": "Preparation and solutions for power outages"
+          }
+        ]
+      },
+      {
+        "id": "destacados",
+        "name": "Featured",
+        "description": "Analysis, reviews, and the latest trends in energy",
+        "image": "https://i.ibb.co/wZDQDjJM/pexels-kindelmedia-9800028.jpg",
+        "subcategories": [
+          {
+            "id": "analisis-generadores",
+            "name": "Generator Analysis",
+            "description": "Detailed generator reviews"
+          },
+          {
+            "id": "power-banks-solares",
+            "name": "Solar Power Banks",
+            "description": "Analysis of power banks with solar energy"
+          },
+          {
+            "id": "lanzamientos-productos",
+            "name": "Product Launches",
+            "description": "New products and launches"
+          },
+          {
+            "id": "luces-gadgets-solares",
+            "name": "Solar Lights and Gadgets",
+            "description": "Lighting and gadgets with solar energy"
+          },
+          {
+            "id": "tendencias-energia-limpia",
+            "name": "Clean Energy Trends",
+            "description": "Latest trends in renewable energy"
+          }
+        ]
+      },
+      {
+        "id": "marcas",
+        "name": "Brands",
+        "description": "Analysis and comparisons of the best generator and power station brands on the market.",
+        "image": "https://i.ibb.co/jZRT2d2R/ilustratin.jpg",
+        "subcategories": [
+          {
+            "id": "ecoflow",
+            "name": "EcoFlow",
+            "description": "Discover EcoFlow's innovative solar generators and power stations."
+          },
+          {
+            "id": "champion",
+            "name": "Champion",
+            "description": "Analysis of powerful and reliable Champion fuel generators."
+          },
+          {
+            "id": "bluetti",
+            "name": "Bluetti",
+            "description": "Explore Bluetti's portable and solar energy solutions."
+          },
+          {
+            "id": "honda",
+            "name": "Honda",
+            "description": "Honda Generators: synonym for durability, performance, and trust."
+          },
+          {
+            "id": "hyundai",
+            "name": "Hyundai",
+            "description": "Hyundai energy solutions for industrial and domestic use."
+          },
+          {
+            "id": "pulsar",
+            "name": "Pulsar",
+            "description": "Pulsar Generators: accessible power for all your projects."
+          },
+          {
+            "id": "einhell",
+            "name": "Einhell",
+            "description": "Einhell tools and generators for home and workshop."
+          }
+        ]
+      }
+    ]
+  },
+  "SubcategoryPage": {
+    "not_articles": "No articles available in this subcategory yet.",
+    "not_page": "Page not found",
+    "not_article": "Article not found"
+  },
+  "CategoryPage": {
+    "subcategory": "Subcategories",
+    "not_subcategory": "Category not found"
+  },
+  "Metadata": {
+    "title": "Ideal Energy - Generators, Solar Energy and Portable Power Stations",
+    "description": "Your complete guide to electric generators, solar panels, portable power stations and everything about renewable energy.",
+    "web_name": "Ideal Energy",
+    "base_url": "https://energiaideal.vercel.app",
+    "meta_image": "/placeholder.svg?height=630&width=1200&text=EnergyHub"
+  },
+  "HeaderAndFooter": {},
+  "HomeText": {
+    "title_hero": "Your Complete Energy Guide",
+    "description_hero": "Discover everything about electric generators, solar panels, portable power stations and renewable energy",
+    "cta_text": "Explore Guides",
+    "cta_link": "guias-consejos",
+    "category_section": "Categories",
+    "watch_more": "See more...",
+    "featured_articles_section": "Relevant",
+    "last_articles_section": "Latest Articles",
+    "btn_all_articles": "See All Articles",
+    "cta_section": "Need help choosing?",
+    "cta_section_description": "Our guides will help you find the perfect energy solution for your needs",
+    "watch_guides": "See Buying Guides"
+  },
+  "ArticleText": {
+    "recommended": "Related Articles"
+  }
+}

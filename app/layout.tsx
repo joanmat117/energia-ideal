@@ -3,8 +3,8 @@ import type { Metadata } from "next"
 import { Open_Sans , Merriweather} from "next/font/google"
 import "./globals.css"
 import Navbar from "@/components/navbar"
-import { nicheMetadata } from "@/data/dataNiche"
 import { GoogleAnalytics } from '@next/third-parties/google'
+import getTransaltion from "@/lib/getTranslation"
 
 const opensans = Open_Sans(
   { subsets: ["latin"],fallback:["sans-serif"] }
@@ -13,6 +13,8 @@ const opensans = Open_Sans(
 export const merriweather = Merriweather(
   { subsets: ["latin"],fallback:["serif"] }
 )
+
+const texts = getTransaltion()
 
 export const metadata: Metadata = {
   title: nicheMetadata.title,
