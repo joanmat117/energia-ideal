@@ -28,12 +28,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${t(`categories.${category.id}.name`)} | ${t("Metadata.web_name")}`,
     description: t(`categories.${category.id}.description`),
     alternates: {
-      canonical: `${baseUrl}/${category.id}`,
+      canonical: `${baseUrl}/${locale}/${category.id}`,
+      languages: {
+        en: `${baseUrl}/en/${category.id}`,
+        es:  `${baseUrl}/es/${category.id}`
+      }
     },
     openGraph: {
       title: `${t(`categories.${category.id}.name`)} | ${t("Metadata.web_name")}`,
       description: t(`categories.${category.id}.description`),
-      url: `${baseUrl}/${category.id}`,
+      url: `${baseUrl}/${locale}/${category.id}`,
+      locale: locale === "es" ? "es_ES" : "en_US",
       images: [
         {
           url: category.image,

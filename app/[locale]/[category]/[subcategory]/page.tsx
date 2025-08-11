@@ -28,12 +28,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${t(`categories.${category.id}.subcategories.${subcategory.id}.name`)} - ${t(`categories.${category.id}.name`)} | ${t("Metadata.web_name")}`,
     description: t(`categories.${category.id}.subcategories.${subcategory.id}.description`),
     alternates: {
-      canonical: `${baseUrl}/${category.id}/${subcategory.id}`,
+      canonical: `${baseUrl}/${locale}/${category.id}/${subcategory.id}`,
+      languages: {
+        en: `${baseUrl}/en/${category.id}/${subcategory.id}`,
+        es:  `${baseUrl}/es/${category.id}/${subcategory.id}`
+      }
     },
     openGraph: {
       title: `${t(`categories.${category.id}.subcategories.${subcategory.id}.name`)} - ${t(`categories.${category.id}.name`)} | ${t("Metadata.web_name")}`,
       description: t(`categories.${category.id}.subcategories.${subcategory.id}.description`),
-      url: `${baseUrl}/${category.id}/${subcategory.id}`,
+      url: `${baseUrl}/${locale}/${category.id}/${subcategory.id}`,
+      locale:locale === "es" ? "es_ES" : "en_US",
       images: [
         {
           url: category.image,
