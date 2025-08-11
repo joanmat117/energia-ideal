@@ -4,29 +4,36 @@ import type { Metadata } from "next"
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import Breadcrumbs from "@/components/breadcrumbs"
 import { getCategoryBySlug, getArticlesByCategory } from "@/lib/data"
-import { nicheCategoryPage, nicheMetadata, nicheSubcategoryPage } from "@/data/dataNiche"
 import InfiniteScrollComponent from "@/components/InfiniteScrollComponent"
+import { getTranslations } from "next-intl/server"
+
 interface Props {
-  params: Promise<{ category: string }>
+  params: { category: string; locale: string }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { category: categorySlug } = await params
+  const { category: categorySlug, locale } = params
+  const t = await getTranslations(locale)
   const category = getCategoryBySlug(categorySlug)
 
   if (!category) {
     return {
-      title: nicheCategoryPage.not_subcategory,
+      title: t("CategoryPage.not_subcategory"),
     }
   }
 
+  const baseUrl = t("Metadata.base_url")
+
   return {
-    title: `${category.name} | ${nicheMetadata.web_name}`,
+    title: `${category.name} | ${t("Metadata.web_name")}`,
     description: category.description,
+    alternates: {
+      canonical: `${baseUrl}/${category.id}`,
+    },
     openGraph: {
-      title: `${category.name} | ${nicheMetadata.web_name}`,
+      title: `${category.name} | ${t("Metadata.web_name")}`,
       description: category.description,
-      url: `/${category.id}`,
+      url: `${baseUrl}/${category.id}`,
       images: [
         {
           url: category.image,
@@ -38,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${category.name} | ${nicheMetadata.web_name}`,
+      title: `${category.name} | ${t("Metadata.web_name")}`,
       description: category.description,
       images: [category.image],
     },
@@ -46,30 +53,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CategoryPage({ params }: Props) {
-  const { category: categorySlug } = await params
+  const { category: categorySlug, locale } = params
   const category = getCategoryBySlug(categorySlug)
-  const initialArticles = await getArticlesByCategory(category.id,5, 0);
 
   if (!category) {
     notFound()
   }
 
+  const initialArticles = await getArticlesByCategory(category.id, 5, 0)
+
   const breadcrumbs = [{ label: category.id, href: `/${category.id}` }]
 
-  const fetchMoreArticles = async (limit: number, offset: number) => {
-    'use server'; 
-    return getArticlesByCategory(category.id, limit, offset);
-  };
-
+  async function fetchMoreArticles(limit: number, offset: number) {
+    "use server"
+    return getArticlesByCategory(category.id, limit, offset)
+  }
 
   return (
     <div className="max-w-7xl mx-auto">
       <div className="px-4 sm:px-6 lg:px-8 py-8">
-      <Breadcrumbs items={breadcrumbs} />
+        <Breadcrumbs items={breadcrumbs} />
       </div>
 
-      {/*===========Ad==========*/}
-
+      {/* Category Header */}
       <div className="mb-12 px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl text-foreground-50 font-merriweather font-bold mb-4 flex items-center">
           {category.name}
@@ -81,13 +87,16 @@ export default async function CategoryPage({ params }: Props) {
       <div className="mb-12 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap gap-3 ">
           {category.subcategories.map((subcategory) => (
-            <Card key={subcategory.id} className=" group shadow-none px-3 py-2 text-sm hover:opacity-80 cursor-pointer rounded-lg  transition border border-background-950 hover:border-accent-600 text-foreground-100">
+            <Card
+              key={subcategory.id}
+              className="group shadow-none px-3 py-2 text-sm hover:opacity-80 cursor-pointer rounded-lg transition border border-background-950 hover:border-accent-600 text-foreground-100"
+            >
               <Link href={`/${category.id}/${subcategory.id}`}>
-              <CardHeader className="p-0">
-                <CardTitle className="transition text-sm font-medium">
-                  {subcategory.name}
-                </CardTitle>
-              </CardHeader>
+                <CardHeader className="p-0">
+                  <CardTitle className="transition text-sm font-medium">
+                    {subcategory.name}
+                  </CardTitle>
+                </CardHeader>
               </Link>
             </Card>
           ))}
@@ -95,13 +104,11 @@ export default async function CategoryPage({ params }: Props) {
       </div>
 
       {/* Articles */}
-
-        <div className="sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      <InfiniteScrollComponent initialData={initialArticles} fetchMore={fetchMoreArticles} />
-          </div>
+      <div className="sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <InfiniteScrollComponent initialData={initialArticles} fetchMore={fetchMoreArticles} />
         </div>
-
+      </div>
     </div>
   )
 }

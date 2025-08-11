@@ -1,8 +1,8 @@
 import { supabase } from '@/services/supabase';
-import { nicheCategories as categoriesData, tableDB } from "@/data/dataNiche";
+import { categories as categoriesData, type Category, type SubcategoryRef } from "@/data/categories";
 import { SubcategoryIdType } from "./types";
 
-const TABLE_ARTICLES = tableDB;
+const TABLE_ARTICLES = 'articles';
 
 export interface Article {
   id: number;
@@ -15,35 +15,15 @@ export interface Article {
   image: string;
 }
 
-export interface Subcategory {
-  id: string;
-  name: string;
-  description: string;
-}
+export const categories: Category[] = categoriesData;
 
-export interface Category {
-  id: string;
-  name: string;
-  description: string;
-  image:string;
-  subcategories: Subcategory[];
-}
-
-// Las categorías se siguen cargando desde el JSON local, no desde Supabase
-export const categories: Category[] = categoriesData.categories;
-
-export const categoriesArray = categoriesData.categories.map(category=>category.id)
-export const subcategoriesArray = categoriesData.categories.flatMap(category=>{
+export const categoriesArray = categoriesData.map(category=>category.id)
+export const subcategoriesArray = categoriesData.flatMap(category=>{
   return category.subcategories.map(subcategory=>{
     return subcategory.id
   })
 })
 
-/**
- * Obtiene un artículo por su slug.
- * @param slug El slug del artículo a buscar.
- * @returns El artículo o undefined si no se encuentra.
- */
 export async function getArticleBySlug(slug: string): Promise<Article | undefined> {
   const { data, error } = await supabase
     .from(TABLE_ARTICLES)
@@ -55,14 +35,9 @@ export async function getArticleBySlug(slug: string): Promise<Article | undefine
     console.error(`Error al obtener artículo por slug "${slug}":`, error);
     return undefined;
   }
-  return data as Article; // Aseguramos el tipo
+  return data as Article; 
 }
 
-/**
- * Obtiene artículos filtrados por una categoría principal (basado en IDs de subcategorías).
- * @param categoryId El ID de la categoría principal.
- * @returns Un array de artículos.
- */
 export async function getArticlesByCategory(
   categoryId: string,
   limit: number,
@@ -159,27 +134,15 @@ export async function getRelatedArticles(currentArticle: Article, limit = 4): Pr
  * @returns La categoría o undefined si no se encuentra.
  */
 export function getCategoryBySlug(slug: string): Category{
-  // Las categorías no se obtienen de Supabase, sino de 'categoriesData'
   return categories.find((category) => category.id === slug) || categories[0]; // Usamos 'id' en lugar de 'slug' para el match
 }
 
-/**
- * Obtiene una subcategoría por su slug dentro de una categoría específica.
- * NOTA: Las subcategorías también se cargan desde el JSON local (categoriesData).
- * @param categorySlug El slug de la categoría principal.
- * @param subcategorySlug El slug de la subcategoría a buscar.
- * @returns La subcategoría o undefined si no se encuentra.
- */
-export function getSubcategoryBySlug(categorySlug: string, subcategorySlug: string): Subcategory {
+export function getSubcategoryBySlug(categorySlug: string, subcategorySlug: string): SubcategoryRef{
   const category = getCategoryBySlug(categorySlug);
   // Las subcategorías no se obtienen de Supabase
   return category.subcategories.find((sub) => sub.id === subcategorySlug) || category.subcategories[0]; // Usamos 'id' en lugar de 'slug' para el match
 }
 
-/**
- * Obtiene todos los slugs de artículos.
- * @returns Un array de slugs.
- */
 export async function getAllSlugs(): Promise<string[]> {
   const { data, error } = await supabase
     .from(TABLE_ARTICLES)
@@ -234,14 +197,14 @@ export async function getLatestArticles(limit = 6): Promise<Article[]> {
 // y no sobre la base de datos de Supabase.
 
 export function getCategoryBySubcategories(subcategoryArray: string[]): Category | undefined {
-  return categoriesData.categories.find(category => {
+  return categoriesData.find(category => {
     // Asegurarse de que al menos una subcategoría coincida
     return category.subcategories.some(subcategory => subcategoryArray.includes(subcategory.id));
   });
 }
 
 export function getAllCategoryBySubcategories(subcategoryArray: string[]): string[] {
-  return categoriesData.categories.flatMap(category => {
+  return categoriesData.flatMap(category => {
     // Si alguna de las subcategorías del artículo está presente en las subcategorías de esta categoría,
     // se devuelve el ID de la categoría principal.
     return category.subcategories.some(subcategory => subcategoryArray.includes(subcategory.id)) ?
