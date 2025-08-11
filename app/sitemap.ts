@@ -1,15 +1,16 @@
 
-import { nicheCategories, nicheMetadata } from '@/data/dataNiche';
+// import { nicheCategories, nicheMetadata } from '@/data/dataNiche';
+import { categories } from '@/data/categories'
 import { categoriesArray, getAllSlugsAndCreatedAt} from '@/lib/data'
 
-const baseUrl = nicheMetadata.base_url;
+const baseUrl = 'https://energiaideal.vercel.app';
 
 export const revalidate = 21600; 
 
 function getSubcategorySitemapEntries() {
   const subcategoryEntries:{url:any,lastModified:any,changeFrequency:string,priority:number}[] = [];
 
-  nicheCategories.categories.forEach((category) => {
+  categories.forEach((category) => {
     category.subcategories.forEach((subcategory) => {
       const url = `${baseUrl}/${category.id}/${subcategory.id}`;
       subcategoryEntries.push({
