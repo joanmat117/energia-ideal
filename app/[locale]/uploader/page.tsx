@@ -14,7 +14,6 @@ import { Loader2, CheckCircle, XCircle, Clock, Search, Edit, Trash2, ChevronLeft
 import { supabase, isSupabaseConfigured } from "@/services/supabase"
 import { subcategoriesArray } from "@/lib/data"
 import Link from "next/link"
-import { nicheMetadata } from "@/data/dataNiche"
 
 const SUBCATEGORIES = subcategoriesArray
 
@@ -1183,7 +1182,7 @@ export default function ArticleForm() {
                       {articles.map((article) => (
                         <tr key={article.id} className="hover:bg-gray-50">
                           <td className="border border-gray-200">
-                            <Link className="px-4 py-2" href={nicheMetadata.base_url +"/article/"+article.slug}>
+                            <Link className="px-4 py-2" href={"https://energiaideal.vercel.app/article/"+article.slug}>
                             <div className="font-medium">{truncateText(article.title, 50)}</div>
                             <div className="text-xs text-gray-500">Slug: {article.slug}</div>
                             </Link>
