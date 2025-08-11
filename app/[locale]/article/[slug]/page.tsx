@@ -15,12 +15,12 @@ import { getTranslations } from "next-intl/server";
 import "./articulo.css";
 
 interface Props {
-  params: { slug: string; locale: string };
+  params:any;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug: articleSlug, locale } = params;
-  const t = await getTranslations(locale);
+  const { slug: articleSlug, locale } = await params;
+  const t = await getTranslations({locale});
 
   const article = await getArticleBySlug(articleSlug);
 

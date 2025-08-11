@@ -15,12 +15,12 @@ export const merriweather = Merriweather({ subsets: ["latin"], fallback: ["serif
 export async function generateMetadata({
   params
 }: {
-  params: { locale: string };
+  params:any
 }): Promise<Metadata> {
-  const locale = params.locale
+  const {locale} = await params
   let t;
   try {
-    t = await getTranslations(locale);
+    t = await getTranslations({locale});
   } catch (e) {
     notFound();
   }
@@ -36,7 +36,7 @@ export async function generateMetadata({
       address: false,
       telephone: false
     },
-    metadataBase: new URL(t("Metadata.base_url")),
+    metadataBase: new URL("https://energiaideal.vercel.app"),
     alternates: {
       canonical: "/"
     },
@@ -78,26 +78,26 @@ export async function generateMetadata({
 
 export default async function RootLayout({
   children,
-  params: { locale }
+  params
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  params:any;
 }) {
-  let messages;
-
+  const awaitedParams = await params
+  let messages
   try {
-    messages = (await import(`@/messages/${locale}.json`)).default;
+    messages = (await import(`@/messages/${awaitedParams.locale}.json`)).default;
   } catch (e) {
     notFound();
   }
 
   return (
-    <html lang={locale}>
+    <html lang={awaitedParams.locale}>
       <head>
         <meta name="apple-mobile-web-app-title" content={messages.Metadata.web_name} />
       </head>
       <body className={opensans.className}>
-        <NextIntlClientProvider locale={locale} messages={messages}>
+        <NextIntlClientProvider locale={awaitedParams.locale} messages={messages}>
           <div className="min-h-screen bg-background-100 text-foreground-50">
             <Navbar />
             <main className="pb-12 min-h-dvh">{children}</main>

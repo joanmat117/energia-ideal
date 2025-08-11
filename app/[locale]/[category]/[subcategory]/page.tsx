@@ -6,12 +6,12 @@ import InfiniteScrollComponent from "@/components/InfiniteScrollComponent"
 import { getTranslations } from "next-intl/server"
 
 interface Props {
-  params: { category: string; subcategory: string; locale: string }
+  params: Promise<{ category: string; subcategory: string; locale: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { category: categorySlug, subcategory: subcategorySlug, locale } = params
-  const t = await getTranslations(locale)
+  const { category: categorySlug, subcategory: subcategorySlug, locale } = await params
+  const t = await getTranslations({locale})
 
   const category = getCategoryBySlug(categorySlug)
   const subcategory = getSubcategoryBySlug(categorySlug, subcategorySlug)
@@ -25,37 +25,38 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const baseUrl = t("Metadata.base_url")
 
   return {
-    title: `${subcategory.name} - ${category.name} | ${t("Metadata.web_name")}`,
-    description: subcategory.description,
+    title: `${t(`categories.${category.id}.subcategories.${subcategory.id}.name`)} - ${t(`categories.${category.id}.name`)} | ${t("Metadata.web_name")}`,
+    description: t(`categories.${category.id}.subcategories.${subcategory.id}.description`),
     alternates: {
       canonical: `${baseUrl}/${category.id}/${subcategory.id}`,
     },
     openGraph: {
-      title: `${subcategory.name} - ${category.name} | ${t("Metadata.web_name")}`,
-      description: subcategory.description,
+      title: `${t(`categories.${category.id}.subcategories.${subcategory.id}.name`)} - ${t(`categories.${category.id}.name`)} | ${t("Metadata.web_name")}`,
+      description: t(`categories.${category.id}.subcategories.${subcategory.id}.description`),
       url: `${baseUrl}/${category.id}/${subcategory.id}`,
       images: [
         {
           url: category.image,
           width: 1200,
           height: 630,
-          alt: subcategory.name,
+          alt: t(`categories.${category.id}.subcategories.${subcategory.id}.name`),
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${subcategory.name} - ${category.name} | ${t("Metadata.web_name")}`,
-      description: subcategory.description,
+      title: `${t(`categories.${category.id}.subcategories.${subcategory.id}.name`)} - ${t(`categories.${category.id}.name`)} | ${t("Metadata.web_name")}`,
+      description: t(`categories.${category.id}.subcategories.${subcategory.id}.description`),
       images: [category.image],
     },
   }
 }
 
 export default async function SubcategoryPage({ params }: Props) {
-  const { category: categorySlug, subcategory: subcategorySlug } = params
+  const { category: categorySlug, subcategory: subcategorySlug,locale } = await params
   const category = getCategoryBySlug(categorySlug)
   const subcategory = getSubcategoryBySlug(categorySlug, subcategorySlug)
+  const t = await getTranslations({locale})
 
   if (!category || !subcategory) {
     notFound()
@@ -79,8 +80,8 @@ export default async function SubcategoryPage({ params }: Props) {
         <Breadcrumbs items={breadcrumbs} />
       </div>
       <div className="mb-12 px-4 sm:px-6 lg:px-8 py-2">
-        <h1 className="text-4xl font-bold mb-4">{subcategory.name}</h1>
-        <p className="text-xl text-foreground-800 mb-8">{subcategory.description}</p>
+        <h1 className="text-4xl font-bold mb-4">{t(`categories.${category.id}.subcategories.${subcategory.id}.name`)}</h1>
+        <p className="text-xl text-foreground-800 mb-8">{t(`categories.${category.id}.subcategories.${subcategory.id}.description`)}</p>
       </div>
 
       {/* Articles */}

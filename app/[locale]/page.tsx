@@ -10,7 +10,7 @@ interface HomePageProps {
 
 export default async function HomePage({ params }: HomePageProps) {
   const {locale} = await params
-  const t = await getTranslations(locale);
+  const t = await getTranslations({locale});
 
   const latestArticles = await getLatestArticles(8);
 

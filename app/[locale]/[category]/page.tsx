@@ -8,12 +8,12 @@ import InfiniteScrollComponent from "@/components/InfiniteScrollComponent"
 import { getTranslations } from "next-intl/server"
 
 interface Props {
-  params: { category: string; locale: string }
+  params: any
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { category: categorySlug, locale } = params
-  const t = await getTranslations(locale)
+  const { category: categorySlug, locale } = await params
+  const t = await getTranslations({locale})
   const category = getCategoryBySlug(categorySlug)
 
   if (!category) {
@@ -25,36 +25,37 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const baseUrl = t("Metadata.base_url")
 
   return {
-    title: `${category.name} | ${t("Metadata.web_name")}`,
-    description: category.description,
+    title: `${t(`categories.${category.id}.name`)} | ${t("Metadata.web_name")}`,
+    description: t(`categories.${category.id}.description`),
     alternates: {
       canonical: `${baseUrl}/${category.id}`,
     },
     openGraph: {
-      title: `${category.name} | ${t("Metadata.web_name")}`,
-      description: category.description,
+      title: `${t(`categories.${category.id}.name`)} | ${t("Metadata.web_name")}`,
+      description: t(`categories.${category.id}.description`),
       url: `${baseUrl}/${category.id}`,
       images: [
         {
           url: category.image,
           width: 1200,
           height: 630,
-          alt: category.name,
+          alt: t(`categories.${category.id}.name`),
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${category.name} | ${t("Metadata.web_name")}`,
-      description: category.description,
+      title: `${t(`categories.${category.id}.name`)} | ${t("Metadata.web_name")}`,
+      description: t(`categories.${category.id}.description`),
       images: [category.image],
     },
   }
 }
 
 export default async function CategoryPage({ params }: Props) {
-  const { category: categorySlug, locale } = params
+  const { category: categorySlug, locale } = await params
   const category = getCategoryBySlug(categorySlug)
+  const t = await getTranslations({locale})
 
   if (!category) {
     notFound()
@@ -78,9 +79,9 @@ export default async function CategoryPage({ params }: Props) {
       {/* Category Header */}
       <div className="mb-12 px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl text-foreground-50 font-merriweather font-bold mb-4 flex items-center">
-          {category.name}
+          {t(`categories.${category.id}.name`)}
         </h1>
-        <p className="text-xl text-foreground-600 mb-8">{category.description}</p>
+        <p className="text-xl text-foreground-600 mb-8">{t(`categories.${category.id}.description`)}</p>
       </div>
 
       {/* Subcategories */}
@@ -94,7 +95,7 @@ export default async function CategoryPage({ params }: Props) {
               <Link href={`/${category.id}/${subcategory.id}`}>
                 <CardHeader className="p-0">
                   <CardTitle className="transition text-sm font-medium">
-                    {subcategory.name}
+                    {t(`categories.${category.id}.name`)}
                   </CardTitle>
                 </CardHeader>
               </Link>

@@ -2,7 +2,7 @@ export type SubcategoryRef = { id: string };
 
 export type Category = {
   id: string;
-  image?: string;
+  image: string;
   subcategories: SubcategoryRef[];
 };
 
