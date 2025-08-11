@@ -8,6 +8,7 @@ export interface Article {
   id: number;
   created_at: string;
   title: string;
+  title_en?:string
   slug: string;
   subcategory: SubcategoryIdType[]; 
   description: string;

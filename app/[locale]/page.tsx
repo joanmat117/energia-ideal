@@ -87,7 +87,7 @@ export default async function HomePage({ params }: HomePageProps) {
           <h2 className="text-3xl font-bold text-center mb-8">{t("HomeText.last_articles_section")}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {latestArticles.map((article) => (
-              <ArticleCard key={article.id} article={article} />
+              <ArticleCard locale={locale} key={article.id} article={article} />
             ))}
           </div>
         </div>

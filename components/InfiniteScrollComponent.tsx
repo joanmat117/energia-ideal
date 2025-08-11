@@ -4,17 +4,20 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ArticleCard from './article-card';
 import { Article } from '@/lib/data';
 import ArticleCardSkeleton from "@/components/ArticleCardSkeleton"
+import { useParams } from 'next/navigation';
 
 
 interface InfiniteScrollProps {
   initialData: Article[];
   fetchMore: (limit: number, offset: number) => Promise<Article[]>;
   batchSize?: number;
+  locale:string
 }
 
 function InfiniteScrollComponent({
   initialData,
   fetchMore,
+  locale,
   batchSize = 10,
 }: InfiniteScrollProps) {
   const [data, setData] = useState<Article[]>(initialData);
@@ -95,7 +98,7 @@ function InfiniteScrollComponent({
     if (data.length === 0 && hasMore && !isLoadingRef.current) {
       const timeoutId = setTimeout(loadData, 100);
       return () => clearTimeout(timeoutId);
-    }
+    } 
   }, []);
 
   return (
@@ -105,7 +108,7 @@ function InfiniteScrollComponent({
       )}
 
       {data.map((item) => (
-        <ArticleCard key={item.id} article={item} />
+        <ArticleCard locale={locale} key={item.id} article={item} />
       ))}
 
       {hasMore && (

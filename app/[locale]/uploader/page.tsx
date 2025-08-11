@@ -43,6 +43,7 @@ interface ProgressStep {
 interface Article {
   id: string
   title: string
+  title_en?: string
   description: string
   content: string
   image: string
@@ -50,6 +51,30 @@ interface Article {
   slug: string
   created_at?: string
 }
+
+// Función para traducir texto del español al inglés
+const translateToEnglish = async (text: string): Promise<string> => {
+  try {
+    const response = await fetch(
+      `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=es|en&de=yoan5268@gmail.com`
+    );
+    
+    if (!response.ok) {
+      throw new Error(`Error de API: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (data.responseStatus !== 200) {
+      throw new Error(`Error de traducción: ${data.responseDetails || 'Error desconocido'}`);
+    }
+    
+    return data.responseData.translatedText;
+  } catch (error: any) {
+    console.error('Error en traducción:', error);
+    throw new Error(`Fallo en la traducción: ${error.message}`);
+  }
+};
 
 export default function ArticleForm() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -183,6 +208,7 @@ export default function ArticleForm() {
   const initializeProgress = (isBulk = false) => {
     const steps: ProgressStep[] = [
       { id: "validate", label: "Validando datos", status: "pending" },
+      { id: "translate", label: "Traduciendo título(s) al inglés", status: "pending" },
       { id: "upload-es", label: "Subiendo artículo(s) en español", status: "pending" },
     ]
 
@@ -290,7 +316,19 @@ export default function ArticleForm() {
 
       updateProgressStep("validate", "success")
 
-      // Paso 2: Subir artículo en español
+      // Paso 2: Traducir título al inglés
+      updateProgressStep("translate", "loading")
+      
+      let titleEn: string
+      try {
+        titleEn = await translateToEnglish(formData.title)
+        updateProgressStep("translate", "success", `"${titleEn}"`)
+      } catch (error: any) {
+        updateProgressStep("translate", "error", error.message)
+        return
+      }
+
+      // Paso 3: Subir artículo en español
       updateProgressStep("upload-es", "loading")
 
       const slug = generateSlug(formData.title)
@@ -305,6 +343,7 @@ export default function ArticleForm() {
 
       const articleData = {
         title: formData.title.trim(),
+        title_en: titleEn,
         description: processedDescription,
         content: processedContent.trim(),
         image: formData.image.trim(),
@@ -342,7 +381,9 @@ export default function ArticleForm() {
     } catch (error: any) {
       console.error("Error completo:", error)
 
-      if (error.message.includes("español")) {
+      if (error.message.includes("traducción")) {
+        updateProgressStep("translate", "error", error.message)
+      } else if (error.message.includes("español")) {
         updateProgressStep("upload-es", "error", error.message)
       } else {
         updateProgressStep("validate", "error", error.message)
@@ -492,10 +533,31 @@ export default function ArticleForm() {
 
       updateProgressStep("validate", "success")
 
-      // Paso 2: Subir artículos en español
+      // Paso 2: Traducir todos los títulos al inglés
+      updateProgressStep("translate", "loading")
+
+      const translatedTitles: string[] = []
+      for (let i = 0; i < jsonData.length; i++) {
+        try {
+          const titleEn = await translateToEnglish(jsonData[i].title)
+          translatedTitles.push(titleEn)
+          
+          // Pequeño delay para evitar rate limiting
+          if (i < jsonData.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, 100))
+          }
+        } catch (error: any) {
+          updateProgressStep("translate", "error", `Error en artículo ${i + 1}: ${error.message}`)
+          return
+        }
+      }
+
+      updateProgressStep("translate", "success", `${translatedTitles.length} títulos traducidos`)
+
+      // Paso 3: Subir artículos en español
       updateProgressStep("upload-es", "loading")
 
-      const articlesToInsert = jsonData.map((article) => {
+      const articlesToInsert = jsonData.map((article, index) => {
         const slug = article.slug || generateSlug(article.title)
         const processedContent = article.content.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
         
@@ -508,6 +570,7 @@ export default function ArticleForm() {
 
         return {
           title: article.title.trim(),
+          title_en: translatedTitles[index],
           description: processedDescription,
           content: processedContent.trim(),
           image: article.image.trim(),
@@ -545,7 +608,9 @@ export default function ArticleForm() {
     } catch (error: any) {
       console.error("Error en carga masiva:", error)
 
-      if (error.message.includes("español")) {
+      if (error.message.includes("traducción")) {
+        updateProgressStep("translate", "error", error.message)
+      } else if (error.message.includes("español")) {
         updateProgressStep("upload-es", "error", error.message)
       } else {
         updateProgressStep("validate", "error", error.message)
@@ -622,6 +687,19 @@ export default function ArticleForm() {
         return
       }
 
+      // Traducir el título al inglés
+      let titleEn: string
+      try {
+        titleEn = await translateToEnglish(editingArticle.title)
+      } catch (error: any) {
+        toast({
+          title: "Error de traducción",
+          description: `No se pudo traducir el título: ${error.message}`,
+          variant: "destructive",
+        })
+        return
+      }
+
       // Generar slug actualizado
       const slug = editingArticle.slug || generateSlug(editingArticle.title)
       const processedContent = editingArticle.content.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
@@ -635,6 +713,7 @@ export default function ArticleForm() {
 
       const updatedArticle = {
         title: editingArticle.title.trim(),
+        title_en: titleEn,
         description: processedDescription,
         content: processedContent.trim(),
         image: editingArticle.image?.trim() || "",
@@ -785,15 +864,18 @@ export default function ArticleForm() {
               <div className="space-y-4">
                 {/* Título */}
                 <div>
-                  <Label htmlFor="edit-title">Título *</Label>
+                  <Label htmlFor="edit-title">Título * (en español)</Label>
                   <Input
                     id="edit-title"
                     value={editingArticle.title}
                     onChange={(e) => setEditingArticle((prev: Article | null) => 
                       prev ? { ...prev, title: e.target.value } : null
                     )}
-                    placeholder="Título del artículo"
+                    placeholder="Título del artículo en español"
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    🌐 El título se traducirá automáticamente al inglés al guardar
+                  </p>
                 </div>
 
                 {/* Descripción */}
@@ -897,7 +979,7 @@ export default function ArticleForm() {
                 <div>
                   <CardTitle className="text-2xl font-bold">Crear Nuevo Artículo</CardTitle>
                   <CardDescription>
-                    Los artículos se subirán a la base de datos en español
+                    Los artículos se subirán a la base de datos en español con título traducido al inglés
                   </CardDescription>
                 </div>
                 <Button
@@ -914,16 +996,21 @@ export default function ArticleForm() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Título */}
                 <div className="space-y-2">
-                  <Label htmlFor="title">Título *</Label>
+                  <Label htmlFor="title">Título * (en español)</Label>
                   <Input
                     id="title"
                     value={formData.title}
                     onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
-                    placeholder="Ingresa el título del artículo"
+                    placeholder="Ingresa el título del artículo en español"
                     className={errors.title ? "border-red-500" : ""}
                   />
                   {errors.title && <p className="text-sm text-red-500">{errors.title}</p>}
-                  {formData.title && <p className="text-sm text-gray-500">Slug: {generateSlug(formData.title)}</p>}
+                  {formData.title && (
+                    <div className="text-sm text-gray-500 space-y-1">
+                      <p>Slug: {generateSlug(formData.title)}</p>
+                      <p className="text-blue-600">🌐 Se traducirá automáticamente al inglés al subir</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Descripción */}
@@ -1021,6 +1108,7 @@ export default function ArticleForm() {
                   <div className="text-center">
                     <h3 className="text-lg font-semibold text-gray-900">📝 Carga Masiva por JSON</h3>
                     <p className="text-sm text-gray-600 mt-1">
+                      Los títulos se traducirán automáticamente al inglés
                     </p>
                   </div>
 
@@ -1036,7 +1124,7 @@ export default function ArticleForm() {
                       placeholder={`Pega aquí tu JSON con la estructura:
 [
   {
-    "title": "Título del artículo",
+    "title": "Título del artículo en español",
     "description": "Descripción del artículo (opcional)",
     "slug": "titulo-del-articulo",
     "subcategory": ["gasolina", "emergencias"],
@@ -1050,13 +1138,16 @@ export default function ArticleForm() {
 
                     <div className="text-xs text-gray-500 space-y-1">
                       <p>
-                        <strong>Campos requeridos:</strong> title, content, image, subcategory
+                        <strong>Campos requeridos:</strong> title (español), content, image, subcategory
                       </p>
                       <p>
                         <strong>Campos opcionales:</strong> description, slug
                       </p>
                       <p>
-                        💡 <strong>Tip:</strong> El slug y descripción se generan automáticamente si no los incluyes
+                        <strong>Automático:</strong> title_en (se traduce del título español)
+                      </p>
+                      <p>
+                        💡 <strong>Tip:</strong> El slug, descripción y título en inglés se generan automáticamente
                       </p>
                     </div>
 
@@ -1183,8 +1274,11 @@ export default function ArticleForm() {
                         <tr key={article.id} className="hover:bg-gray-50">
                           <td className="border border-gray-200">
                             <Link className="px-4 py-2" href={"https://energiaideal.vercel.app/article/"+article.slug}>
-                            <div className="font-medium">{truncateText(article.title, 50)}</div>
-                            <div className="text-xs text-gray-500">Slug: {article.slug}</div>
+                              <div className="font-medium">{truncateText(article.title, 50)}</div>
+                              {article.title_en && (
+                                <div className="text-xs text-blue-600">EN: {truncateText(article.title_en, 50)}</div>
+                              )}
+                              <div className="text-xs text-gray-500">Slug: {article.slug}</div>
                             </Link>
                           </td>
                           <td className="border border-gray-200 px-4 py-2">

@@ -8,12 +8,14 @@ import type { Article } from "@/lib/data"
 interface ArticleCardProps {
   article: Article
   featured?: boolean
+  locale:string
 }
 
-export default function ArticleCard({ article, featured = false }: ArticleCardProps) {
-  
+export default async function ArticleCard({locale, article, featured = false }: ArticleCardProps) {
   const date = new Date(article.created_at).toLocaleDateString("es-ES")
   
+  const titleArticle = locale == 'es'? "title" : "title_en"
+
   return (
     <Card className={`group transition border-none overflow-hidden rounded-none sm:rounded-lg cursor-pointer`}>
       <Link href={`/article/${article.slug}`}>
@@ -37,7 +39,7 @@ export default function ArticleCard({ article, featured = false }: ArticleCardPr
         </div>
 
         <CardTitle className="line-clamp-3 text-2xl font-merriweather group-hover:text-accent-600 transition-colors">
-          {article.title}
+          {article[titleArticle]}
         </CardTitle>
 
         <CardDescription className="line-clamp-2">{article.description}</CardDescription>

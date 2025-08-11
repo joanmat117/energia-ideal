@@ -135,7 +135,7 @@ export default async function ArticlePage({ params }: Props) {
             <h2 className="text-3xl mt-20 font-bold mb-8">{t("ArticleText.recommended")}</h2>
             <div className="grid grid-cols-1 gap-8">
               {relatedArticles.map((relatedArticle) => (
-                <ArticleCard key={relatedArticle.id} article={relatedArticle} />
+                <ArticleCard locale={locale} key={relatedArticle.id} article={relatedArticle} />
               ))}
             </div>
           </section>
