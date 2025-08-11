@@ -13,10 +13,11 @@ export const opensans = Open_Sans({ subsets: ["latin"], fallback: ["sans-serif"]
 export const merriweather = Merriweather({ subsets: ["latin"], fallback: ["serif"] });
 
 export async function generateMetadata({
-  params: { locale }
+  params
 }: {
   params: { locale: string };
 }): Promise<Metadata> {
+  const locale = params.locale
   let t;
   try {
     t = await getTranslations(locale);

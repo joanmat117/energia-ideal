@@ -3,9 +3,10 @@
 import { LucideLightbulb} from 'lucide-react'
 import Link from "next/link"
 import { categories } from "@/lib/data"
-import { nicheMetadata } from "@/data/dataNiche"
+import { useTranslations } from 'next-intl'
 
 export default function Navbar() {
+  const t = useTranslations()
   return (
     <nav className="bg-background-100 shadow-sm text-foreground-50 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto">
@@ -13,7 +14,7 @@ export default function Navbar() {
           <div className="flex items-center p-3">
             <Link href="/" className="flex gap-1 items-center mx-2">
             <LucideLightbulb/>
-              <span className="text-2xl font-extrabold font-merriweather  ">{nicheMetadata.web_name}</span>
+              <span className="text-2xl font-extrabold font-merriweather  ">{t('Metadata.web_name')}</span>
             </Link>
           </div>
 
@@ -25,7 +26,7 @@ export default function Navbar() {
                 href={`/${category.id}`}
                 className=" border-r p-2 transition border-white/50 md:border-r-foreground-900/50 last:border-none whitespace-nowrap hover:bg-accent-600/10 hover:underline font-medium"
               >
-                {category.name}
+                {t(`categories.${category.id}.name`)}
               </Link>
             ))}
           </div>

@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Calendar, User } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { Article } from "@/lib/data"
 
