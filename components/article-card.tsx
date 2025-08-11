@@ -14,7 +14,7 @@ interface ArticleCardProps {
 export default async function ArticleCard({locale, article, featured = false }: ArticleCardProps) {
   const date = new Date(article.created_at).toLocaleDateString("es-ES")
   
-  const titleArticle = locale == 'es'? "title" : "title_en"
+  const titleArticle = locale == 'en' && article.title_en ? "title_en" : "title"
 
   return (
     <Card className={`group transition border-none overflow-hidden rounded-none sm:rounded-lg cursor-pointer`}>
