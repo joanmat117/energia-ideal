@@ -68,7 +68,7 @@ export default async function CategoryPage({ params }: Props) {
 
   const initialArticles = await getArticlesByCategory(category.id, 5, 0)
 
-  const breadcrumbs = [{ label: category.id, href: `/${category.id}` }]
+  const breadcrumbs = [{ label: t(`categories.${category?.id}.name`), href: `/${category.id}` }]
 
   async function fetchMoreArticles(limit: number, offset: number) {
     "use server"

@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Calendar, User } from "lucide-react"
+import { Calendar } from "lucide-react"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { Article } from "@/lib/data"
@@ -11,7 +11,7 @@ interface ArticleCardProps {
   locale:string
 }
 
-export default async function ArticleCard({locale, article, featured = false }: ArticleCardProps) {
+export default function ArticleCard({locale, article, featured = false }: ArticleCardProps) {
   const date = new Date(article.created_at).toLocaleDateString("es-ES")
   
   const titleArticle = locale == 'en' && article.title_en ? "title_en" : "title"

@@ -24,6 +24,7 @@ function InfiniteScrollComponent({
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const observerTarget = useRef<HTMLDivElement>(null);
+  const lang = locale
   
   // Set para tracking eficiente de IDs únicos
   const loadedIds = useRef(new Set(initialData.map(item => item.id)));
@@ -107,7 +108,7 @@ function InfiniteScrollComponent({
       )}
 
       {data.map((item) => (
-        <ArticleCard locale={locale} key={item.id} article={item} />
+        <ArticleCard locale={lang} key={item.id} article={item} />
       ))}
 
       {hasMore && (

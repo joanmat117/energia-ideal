@@ -197,10 +197,10 @@ export async function getLatestArticles(limit = 6): Promise<Article[]> {
 // Estas funciones NO se modifican ya que operan sobre 'categoriesData' (tu JSON local)
 // y no sobre la base de datos de Supabase.
 
-export function getCategoryBySubcategories(subcategoryArray: string[]): Category | undefined {
+export function getCategoryBySubcategories(subcategoryElement: string): Category | undefined {
   return categoriesData.find(category => {
     // Asegurarse de que al menos una subcategoría coincida
-    return category.subcategories.some(subcategory => subcategoryArray.includes(subcategory.id));
+    return category.subcategories.some(subcategory => subcategoryElement == subcategory.id);
   });
 }
 

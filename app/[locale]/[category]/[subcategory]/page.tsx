@@ -70,8 +70,8 @@ export default async function SubcategoryPage({ params }: Props) {
   const initialArticles = await getArticlesBySubcategory(subcategory.id, 5, 0)
 
   const breadcrumbs = [
-    { label: category.id, href: `/${category.id}` },
-    { label: subcategory.id, href: `/${category.id}/${subcategory.id}` },
+    { label: t(`categories.${category?.id}.name`), href: `/${category.id}` },
+    { label: t(`categories.${category?.id}.subcategories.${subcategory.id}.name`), href: `/${category.id}/${subcategory.id}` },
   ]
 
   async function fetchMoreArticles(limit: number, offset: number) {

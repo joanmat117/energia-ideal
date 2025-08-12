@@ -78,16 +78,18 @@ export default async function ArticlePage({ params }: Props) {
     notFound();
   }
 
-  const category = getCategoryBySubcategories(article.subcategory);
+  const category = getCategoryBySubcategories(article.subcategory[0]);
   const subcategory = article.subcategory[0];
   const relatedArticles = await getRelatedArticles(article);
   const htmlContent = await markdownToHtml(article.content);
   const processedContent = addIdsToHeadings(htmlContent);
+  
+  const titleArticle = locale == 'en' && article.title_en ? "title_en" : "title"
 
   const breadcrumbs = [
-    { label: category?.id || t("CategoryPage.not_subcategory"), href: `/${category?.id || ""}` },
-    { label: subcategory || t("CategoryPage.not_subcategory"), href: `/${category?.id || ""}/${subcategory || ""}` },
-    { label: article.title, href: `/article/${article.slug}` }, // Ruta en inglés y sin tilde
+    { label: t(`categories.${category?.id}.name`) || t("CategoryPage.not_subcategory"), href: `/${category?.id || ""}` },
+    { label: t(`categories.${category?.id}.subcategories.${subcategory}.name`) || t("CategoryPage.not_subcategory"), href: `/${category?.id || ""}/${subcategory || ""}` },
+    { label: article[titleArticle] || article.title, href: `/article/${article.slug}` }, // Ruta en inglés y sin tilde
   ];
 
   return (
@@ -100,7 +102,7 @@ export default async function ArticlePage({ params }: Props) {
           <article>
             {/* Article Header */}
             <header className="mb-8">
-              <h1 className="text-4xl font-bold mb-4 font-merriweather">{article.title}</h1>
+              <h1 className="text-4xl font-bold mb-4 font-merriweather">{article[titleArticle]}</h1>
 
               <div className="flex items-center text-gray-600 mb-6">
                 <Calendar className="w-5 h-5 mr-2" />
@@ -131,7 +133,7 @@ export default async function ArticlePage({ params }: Props) {
 
         {/* Related Articles */}
         {relatedArticles.length > 0 && (
-          <section className="py-5 sticky lg:h-screen lg:overflow-auto top-0">
+          <section className="py-5">
             <h2 className="text-3xl mt-20 font-bold mb-8">{t("ArticleText.recommended")}</h2>
             <div className="grid grid-cols-1 gap-8">
               {relatedArticles.map((relatedArticle) => (
