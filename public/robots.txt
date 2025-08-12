@@ -1,6 +1,4 @@
 
 User-agent: *
-Disallow: /uploader/
 Allow: /
-
 Sitemap: https://energiaideal.vercel.app/sitemap.xml
