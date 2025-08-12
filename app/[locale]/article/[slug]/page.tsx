@@ -13,6 +13,7 @@ import { markdownToHtml, addIdsToHeadings } from "@/lib/markdown";
 import { getTranslations } from "next-intl/server";
 
 import "./articulo.css";
+import AdBanner300x250 from "@/components/AdBanner300x250";
 
 interface Props {
   params:any;
@@ -69,7 +70,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 
 export default async function ArticlePage({ params }: Props) {
-  const { slug: articleSlug, locale } = params;
+  const { slug: articleSlug, locale } = await params;
 
   const t = await getTranslations({locale});
 
@@ -119,6 +120,7 @@ export default async function ArticlePage({ params }: Props) {
                   height={400}
                   className="w-full h-64 md:h-96 object-cover rounded-lg"
                 />
+                <AdBanner300x250/>
               </div>
             </header>
 
