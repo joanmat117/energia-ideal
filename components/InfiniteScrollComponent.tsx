@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ArticleCard from './article-card';
 import { Article } from '@/lib/data';
 import ArticleCardSkeleton from "@/components/ArticleCardSkeleton"
-import { useParams } from 'next/navigation';
 
 
 interface InfiniteScrollProps {

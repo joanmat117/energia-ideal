@@ -100,7 +100,7 @@ export default async function CategoryPage({ params }: Props) {
               <Link href={`/${category.id}/${subcategory.id}`}>
                 <CardHeader className="p-0">
                   <CardTitle className="transition text-sm font-medium">
-                    {t(`categories.${category.id}.name`)}
+                    {t(`categories.${categorySlug}.subcategories.${subcategory.id}.name`)}
                   </CardTitle>
                 </CardHeader>
               </Link>
