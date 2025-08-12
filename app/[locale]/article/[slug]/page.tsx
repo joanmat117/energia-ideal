@@ -121,6 +121,7 @@ export default async function ArticlePage({ params }: Props) {
                   className="w-full h-64 md:h-96 object-cover rounded-lg"
                 />
                 <AdBanner300x250/>
+                
               </div>
             </header>
 
