@@ -5,7 +5,7 @@ import { categoriesArray, getAllSlugsAndCreatedAt} from '@/lib/data'
 
 const baseUrl = 'https://energiaideal.vercel.app';
 
-export const revalidate = 21600; 
+export const revalidate = 3600; 
 
 function getSubcategorySitemapEntries() {
   const subcategoryEntries:{url:any,lastModified:any,changeFrequency:string,priority:number}[] = [];
