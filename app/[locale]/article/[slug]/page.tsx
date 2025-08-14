@@ -117,9 +117,8 @@ export default async function ArticlePage({ params }: Props) {
                   alt={article.title}
                   className="w-full h-64 md:h-96 object-cover rounded-lg"
                 />
-                {/* <AdsterraAdBanner adKey="5a7109c19094b265cfcde808d7765658" width={300} height={250}/> */}
+               
                 
-            <AdsterraAdBanner adKey="02ff867c12fb06007c19385dcca603b9" height={50} width={320}/>
               </div>
             </header>
 
