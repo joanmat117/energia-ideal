@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const baseUrl = t("Metadata.base_url")
 
   return {
-    title: article.title,
+    title: locale === "es"? article.title : article.title_en,
     description: article.description,
     alternates: {
       canonical: `${baseUrl}/${locale}/article/${article.slug}`,
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       }
     },
     openGraph: {
-      title: article.title,
+      title: locale === "es"? article.title : article.title_en,
       description: article.description,
       url: `${baseUrl}/${locale}/article/${article.slug}`,
       images: [
@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: article.title,
+      title: locale === "es"? article.title : article.title_en,
       description: article.description,
       images: [article.image],
     },

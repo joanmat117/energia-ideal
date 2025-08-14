@@ -59,7 +59,7 @@ const AdsterraAdBanner: React.FC<AdsterraAdProps> = ({
   // Renderizamos el div que actuará como contenedor para el anuncio.
   // El estilo se aplica para reservar el espacio visualmente.
   return (
-    <div className={'flex w-full justify-center rounded-md bg-gray-500/10 relative m-1' + className}>
+    <div className={'flex w-full justify-center rounded-md relative m-1 by-2' + className}>
       <div 
         ref={adContainerRef} 
         style={{ 
