@@ -28,12 +28,22 @@ function getSubcategorySitemapEntries() {
 export default async function sitemap() {
   const articlesData = await getAllSlugsAndCreatedAt();
 
-  const articleEntries = articlesData.map((article:any) => ({
-    url: `${baseUrl}/article/${article.slug}`, 
-    lastModified: new Date(article.created_at).toISOString(), 
-    changeFrequency: 'daily',
-    priority: 0.8,
-  }));  
+  const articleEntries = articlesData.flatMap((article:any) => (
+    [
+    {
+      url: `${baseUrl}/es/article/${article.slug}`, 
+      lastModified: new Date(article.created_at).toISOString(), 
+      changeFrequency: 'daily',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/en/article/${article.slug}`, 
+      lastModified: new Date(article.created_at).toISOString(), 
+      changeFrequency: 'daily',
+      priority: 0.8,
+    }
+    ]
+));  
   const categoriesEntries = categoriesArray.map((category) => ({
     url: `${baseUrl}/${category}`, 
     lastModified: new Date().toISOString(), 
