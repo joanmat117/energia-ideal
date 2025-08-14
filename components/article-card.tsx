@@ -20,11 +20,9 @@ export default function ArticleCard({locale, article, featured = false }: Articl
     <Card className={`group transition border-none overflow-hidden rounded-none sm:rounded-lg cursor-pointer`}>
       <Link href={`/article/${article.slug}`}>
         <div className="relative overflow-hidden">
-          <Image
+          <img
             src={article.image || "/placeholder.svg"}
             alt={article.title}
-            width={featured ? 800 : 400}
-            height={featured ? 400 : 250}
             className="w-full aspect-[21/9] object-cover group-hover:scale-105 transition-transform duration-300"
           />
           {featured && (
