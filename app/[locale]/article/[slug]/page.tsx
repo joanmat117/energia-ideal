@@ -11,9 +11,8 @@ import {
 } from "@/lib/data";
 import { markdownToHtml, addIdsToHeadings } from "@/lib/markdown";
 import { getTranslations } from "next-intl/server";
-
 import "./articulo.css";
-import AdBanner300x250 from "@/components/AdBanner300x250";
+import AdsterraAdBanner from "@/components/AdsterraAdBanner";
 
 interface Props {
   params:any;
@@ -120,7 +119,7 @@ export default async function ArticlePage({ params }: Props) {
                   height={400}
                   className="w-full h-64 md:h-96 object-cover rounded-lg"
                 />
-                <AdBanner300x250/>
+                <AdsterraAdBanner adKey="5a7109c19094b265cfcde808d7765658" width={300} height={250}/>
                 
               </div>
             </header>
