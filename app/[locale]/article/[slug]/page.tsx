@@ -103,7 +103,6 @@ export default async function ArticlePage({ params }: Props) {
             {/* Article Header */}
             <header className="mb-8">
               <h1 className="text-4xl font-bold mb-4 font-merriweather">{article[titleArticle]}</h1>
-              <AdsterraAdBanner adKey="02ff867c12fb06007c19385dcca603b9" height={50} width={320}/>
 
               <div className="flex items-center text-gray-600 mb-6">
                 <Calendar className="w-5 h-5 mr-2" />
@@ -113,15 +112,14 @@ export default async function ArticlePage({ params }: Props) {
               </div>
 
               <div className="relative mb-8">
-                <Image
+                <img
                   src={article.image || "/placeholder.svg"}
                   alt={article.title}
-                  width={800}
-                  height={400}
                   className="w-full h-64 md:h-96 object-cover rounded-lg"
                 />
                 {/* <AdsterraAdBanner adKey="5a7109c19094b265cfcde808d7765658" width={300} height={250}/> */}
                 
+            <AdsterraAdBanner adKey="02ff867c12fb06007c19385dcca603b9" height={50} width={320}/>
               </div>
             </header>
 
