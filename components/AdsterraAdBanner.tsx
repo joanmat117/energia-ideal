@@ -44,7 +44,7 @@ const AdsterraAdBanner: React.FC<AdsterraAdProps> = ({
     // Script 2: Carga el anuncio usando la configuración recién establecida
     const adScript = document.createElement('script');
     adScript.type = 'text/javascript';
-    adScript.src = `//www.highperformanceformat.com/${adKey}/invoke.js`;
+    adScript.src = `https://www.highperformanceformat.com/${adKey}/invoke.js`;
     adScript.async = true; // Buena práctica para no bloquear el renderizado
 
     // Añadimos los scripts al contenedor en el orden correcto
@@ -62,7 +62,8 @@ const AdsterraAdBanner: React.FC<AdsterraAdProps> = ({
       style={{ 
         display: 'inline-block', // Evita colapsos de layout
         width: `${width}px`, 
-        height: `${height}px` 
+        height: `${height}px`,
+        border: '2px dashed #111' 
       }} 
     />
   );
