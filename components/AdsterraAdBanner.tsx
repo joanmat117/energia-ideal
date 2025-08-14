@@ -1,3 +1,4 @@
+// components/AdsterraAd.tsx
 "use client";
 
 import { useEffect, useRef } from 'react';
@@ -6,11 +7,10 @@ interface AdsterraAdProps {
   adKey: string;
   width: number;
   height: number;
-  className?:string;
-  format?: 'iframe'; // Hacemos 'format' opcional, ya que casi siempre será 'iframe'
+  className?:string,
+  format?: 'iframe';
 }
 
-// 2. Usamos React.FC (Functional Component) con los tipos definidos
 const AdsterraAdBanner: React.FC<AdsterraAdProps> = ({ 
   adKey, 
   width, 
@@ -18,18 +18,14 @@ const AdsterraAdBanner: React.FC<AdsterraAdProps> = ({
   className,
   format = 'iframe' 
 }) => {
-  // 3. Tipamos la referencia del ref para que sea un elemento div de HTML
-  const adContainerRef = useRef<HTMLDivElement | null>(null);
+  // La referencia ahora apuntará a un elemento iframe
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   useEffect(() => {
-    // Usamos una guarda para asegurarnos de que el ref está disponible
-    const container = adContainerRef.current;
-    if (!container) return;
+    const iframe = iframeRef.current;
+    if (!iframe) return;
 
-    // Evitamos volver a añadir los scripts si el contenedor ya tiene hijos
-    if (container.hasChildNodes()) return;
-
-    // El objeto de configuración del anuncio
+    // 1. Preparamos la configuración y los scripts como un string de HTML
     const atOptions = {
       'key': adKey,
       'format': format,
@@ -38,37 +34,49 @@ const AdsterraAdBanner: React.FC<AdsterraAdProps> = ({
       'params': {}
     };
 
-    // Script 1: Establece la variable global `atOptions`
-    const configScript = document.createElement('script');
-    configScript.type = 'text/javascript';
-    configScript.innerHTML = `var atOptions = ${JSON.stringify(atOptions)};`;
+    // 2. Creamos un documento HTML completo que se inyectará en el iframe
+    const adHtml = `
+      <html>
+        <head>
+          <style>
+            /* Elimina márgenes y asegura que el contenido ocupe todo el espacio */
+            body { margin: 0; padding: 0; }
+          </style>
+        </head>
+        <body>
+          <script type="text/javascript">
+            var atOptions = ${JSON.stringify(atOptions)};
+          <\/script>
+          <script type="text/javascript" src="https://www.highperformanceformat.com/${adKey}/invoke.js"><\/script>
+        </body>
+      </html>
+    `;
 
-    // Script 2: Carga el anuncio usando la configuración recién establecida
-    const adScript = document.createElement('script');
-    adScript.type = 'text/javascript';
-    adScript.src = `https://www.highperformanceformat.com/${adKey}/invoke.js`;
-    adScript.async = true; // Buena práctica para no bloquear el renderizado
+    // 3. Usamos `srcDoc` para escribir este HTML en el iframe.
+    // Esto es seguro y crea un contexto de documento completamente nuevo y aislado.
+    iframe.srcdoc = adHtml;
+    
+    // NOTA: Es importante que el efecto se ejecute solo una vez.
+    // El array de dependencias vacío [] asegura esto.
+    // Si las props cambian, React destruirá el componente y creará uno nuevo,
+    // disparando el efecto de forma natural.
+  }, []); // El array de dependencias se deja vacío intencionadamente.
 
-    // Añadimos los scripts al contenedor en el orden correcto
-    container.append(configScript);
-    container.append(adScript);
-
-    // El efecto se volverá a ejecutar solo si alguna de estas propiedades cambia
-  }, [adKey, width, height, format]);
-
-  // Renderizamos el div que actuará como contenedor para el anuncio.
-  // El estilo se aplica para reservar el espacio visualmente.
   return (
-    <div className={'flex w-full justify-center relative m-1' + className}>
-      <div 
-        ref={adContainerRef} 
-        style={{ 
-          display: 'inline-block', // Evita colapsos de layout
-          width: `${width}px`, 
-          height: `${height}px`,
-        }} 
-      />
-      </div>
+    <iframe
+      ref={iframeRef}
+      width={width}
+      height={height}
+      className={className}
+      style={{
+        width: `${width}px`,
+        height: `${height}px`,
+        border: 'none', // Ocultamos el borde por defecto del iframe
+        overflow: 'hidden', // Evitamos barras de scroll indeseadas
+      }}
+      scrolling="no"
+      title={`Adsterra Ad ${adKey}`} // Buena práctica para accesibilidad
+    ></iframe>
   );
 };
 
