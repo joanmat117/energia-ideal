@@ -102,6 +102,7 @@ export default async function ArticlePage({ params }: Props) {
           <article>
             {/* Article Header */}
             <header className="mb-8">
+              <AdsterraAdBanner adKey="02ff867c12fb06007c19385dcca603b9" height={50} width={320}/>
               <h1 className="text-4xl font-bold mb-4 font-merriweather">{article[titleArticle]}</h1>
 
               <div className="flex items-center text-gray-600 mb-6">

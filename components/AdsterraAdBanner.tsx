@@ -6,6 +6,7 @@ interface AdsterraAdProps {
   adKey: string;
   width: number;
   height: number;
+  className?:string;
   format?: 'iframe'; // Hacemos 'format' opcional, ya que casi siempre será 'iframe'
 }
 
@@ -14,6 +15,7 @@ const AdsterraAdBanner: React.FC<AdsterraAdProps> = ({
   adKey, 
   width, 
   height, 
+  className,
   format = 'iframe' 
 }) => {
   // 3. Tipamos la referencia del ref para que sea un elemento div de HTML
@@ -57,15 +59,16 @@ const AdsterraAdBanner: React.FC<AdsterraAdProps> = ({
   // Renderizamos el div que actuará como contenedor para el anuncio.
   // El estilo se aplica para reservar el espacio visualmente.
   return (
-    <div 
-      ref={adContainerRef} 
-      style={{ 
-        display: 'inline-block', // Evita colapsos de layout
-        width: `${width}px`, 
-        height: `${height}px`,
-        border: '2px dashed #111' 
-      }} 
-    />
+    <div className={'flex w-full justify-center relative m-1' + className}>
+      <div 
+        ref={adContainerRef} 
+        style={{ 
+          display: 'inline-block', // Evita colapsos de layout
+          width: `${width}px`, 
+          height: `${height}px`,
+        }} 
+      />
+      </div>
   );
 };
 
