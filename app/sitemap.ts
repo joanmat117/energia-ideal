@@ -13,12 +13,22 @@ function getSubcategorySitemapEntries() {
   categories.forEach((category) => {
     category.subcategories.forEach((subcategory) => {
       const url = `${baseUrl}/${category.id}/${subcategory.id}`;
-      subcategoryEntries.push({
-        url: url,
-        lastModified: new Date().toISOString(),
-        changeFrequency: 'weekly',
-        priority: 0.7,
-      });
+      subcategoryEntries.push(
+        
+          {
+            url:`${baseUrl}/es/${category.id}/${subcategory.id}`,
+            lastModified: new Date().toISOString(),
+            changeFrequency: 'weekly',
+            priority: 0.7,
+          },
+          {
+            url: `${baseUrl}/en/${category.id}/${subcategory.id}`,
+            lastModified: new Date().toISOString(),
+            changeFrequency: 'weekly',
+            priority: 0.7,
+          }
+        
+  );
     });
   });
 
@@ -44,12 +54,22 @@ export default async function sitemap() {
     }
     ]
 ));  
-  const categoriesEntries = categoriesArray.map((category) => ({
-    url: `${baseUrl}/${category}`, 
+  const categoriesEntries = categoriesArray.flatMap((category) => (
+    [
+    {
+    url: `${baseUrl}/es/${category}`, 
     lastModified: new Date().toISOString(), 
     changeFrequency: 'daily',
     priority: 0.8,
-  }));
+    },
+    {
+    url: `${baseUrl}/en/${category}`, 
+    lastModified: new Date().toISOString(), 
+    changeFrequency: 'daily',
+    priority: 0.8,
+    }
+    ]
+));
 
     const subcategoriesEntries = getSubcategorySitemapEntries()
 
