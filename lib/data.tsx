@@ -107,25 +107,32 @@ export async function getFeaturedArticles(): Promise<Article[]> {
  * NOTA: Simulamos relación buscando artículos que compartan alguna de las subcategorías del artículo actual.
  */
 export async function getRelatedArticles(currentArticle: Article, limit = 4): Promise<Article[]> {
-  // Si el artículo actual no tiene subcategorías, no podemos encontrar relacionados por ese criterio
+  // Si el artículo actual no tiene subcategorías, no podemos encontrar relacionados
   if (!currentArticle.subcategory || currentArticle.subcategory.length === 0) {
     return [];
   }
 
-  // Busca artículos que compartan al menos una subcategoría con el artículo actual
-  // y que no sean el artículo actual.
+  // Obtenemos un pool más grande de artículos relacionados (20)
   const { data, error } = await supabase
     .from(TABLE_ARTICLES)
     .select('*')
-    .overlaps('subcategory', currentArticle.subcategory) // Busca artículos que se solapen en subcategorías
+    .overlaps('subcategory', currentArticle.subcategory) // Artículos con subcategorías coincidentes
     .neq('id', currentArticle.id) // Excluye el artículo actual
-    .limit(limit);
+    .limit(20); // Obtenemos 20 artículos relacionados
 
   if (error) {
     console.error('Error al obtener artículos relacionados:', error);
     return [];
   }
-  return data as Article[];
+
+  // Si no hay suficientes artículos, devolvemos los que haya
+  if (data.length <= limit) {
+    return data as Article[];
+  }
+
+  // Seleccionamos aleatoriamente 'limit' artículos del pool
+  const shuffled = [...data].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, limit) as Article[];
 }
 
 /**
